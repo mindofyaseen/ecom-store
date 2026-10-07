@@ -35,7 +35,7 @@ export const HeroBanner = () => {
             </h1>
 
             <p className="text-sm sm:text-base text-amber-200/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Experience the legendary crunch of Karachi Mix Nimco, spicy Aloo Bhujia, roasted salted nuts, and mouth-watering sweet halwas delivered fresh to your doorstep anywhere in Pakistan.
+              Experience the legendary crunch of Karachi Mix Nimco, spicy Aloo Bhujia, roasted salted nuts, and crispy Gathiya, Sew & Chewra delivered fresh to your doorstep anywhere in Pakistan.
             </p>
 
             {/* CTA Buttons */}

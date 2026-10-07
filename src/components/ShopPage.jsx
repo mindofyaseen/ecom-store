@@ -69,7 +69,7 @@ export const ShopPage = () => {
               Khandani Nimco Official Store Catalog - Asli Karachi Ka Zaiqa
             </span>
             <h1 className="text-2xl sm:text-4xl font-black text-[#200e08] font-serif">
-              {showWishlistOnly ? 'My Favorite Nimco' : activeCategory === 'All' ? 'All Traditional Snacks & Sweets' : `${activeCategory} Collection`}
+              {showWishlistOnly ? 'My Favorite Nimco' : activeCategory === 'All' ? 'All Traditional Nimco Snacks' : `${activeCategory} Collection`}
             </h1>
           </div>
 

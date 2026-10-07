@@ -68,7 +68,7 @@ export const OrderReceiptModal = () => {
                   </div>
                 </div>
                 <p className="text-xs text-emerald-800 font-semibold mt-1">
-                  Authentic Karachi Nimco, Sweets & Spiced Snacks
+                  Authentic Karachi Nimco & Fresh Spiced Snacks
                 </p>
                 <p className="text-[11px] text-gray-500 mt-1">
                   Burns Road / Saddar Karachi • Helpline: +{whatsappNumber}

@@ -672,7 +672,7 @@ export const AdminDashboard = () => {
                 <h4 className="text-xs font-black uppercase text-amber-400 tracking-wider">
                   Product Catalog Distribution
                 </h4>
-                {['Mix Nimco', 'Spicy Snacks', 'Salted & Nuts', 'Sweets & Halwa', 'Bakery Snacks', 'Gift Hampers'].map((cat) => {
+                {['Mix Nimco', 'Gathiya & Bhujia', 'Sew (Sev)', 'Dal Snacks', 'Chewra & Papri', 'Salted Nuts', 'Nimco Hampers'].map((cat) => {
                   const count = products.filter(p => p.category === cat).length;
                   const pct = Math.round((count / products.length) * 100);
                   return (
@@ -815,11 +815,12 @@ export const AdminDashboard = () => {
                     className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white"
                   >
                     <option value="Mix Nimco">Mix Nimco</option>
-                    <option value="Spicy Snacks">Spicy Snacks</option>
-                    <option value="Salted & Nuts">Salted & Nuts</option>
-                    <option value="Sweets & Halwa">Sweets & Halwa</option>
-                    <option value="Bakery Snacks">Bakery Snacks</option>
-                    <option value="Gift Hampers">Gift Hampers</option>
+                    <option value="Gathiya & Bhujia">Gathiya & Bhujia</option>
+                    <option value="Sew (Sev)">Sew (Sev)</option>
+                    <option value="Dal Snacks">Dal Snacks</option>
+                    <option value="Chewra & Papri">Chewra & Papri</option>
+                    <option value="Salted Nuts">Salted Nuts</option>
+                    <option value="Nimco Hampers">Nimco Hampers</option>
                   </select>
                 </div>
 
