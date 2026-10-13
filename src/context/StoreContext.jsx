@@ -54,7 +54,7 @@ export const StoreProvider = ({ children }) => {
     if (!saved) return [];
     try {
       const parsed = JSON.parse(saved);
-      return parsed.filter(item => INITIAL_PRODUCTS.some(p => p.id === item.productId));
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }

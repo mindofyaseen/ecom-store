@@ -12,7 +12,7 @@ export const CategoryFilter = () => {
     wishlist
   } = useStore();
 
-  const categories = [
+  const baseCategories = [
     { label: 'All', icon: '🌟', title: 'All Nimco' },
     { label: 'Mix Nimco', icon: '🥨', title: 'Mix Nimco' },
     { label: 'Gathiya & Bhujia', icon: '🌶️', title: 'Gathiya & Bhujia' },
@@ -22,6 +22,14 @@ export const CategoryFilter = () => {
     { label: 'Salted Nuts', icon: '🥜', title: 'Salted Nuts' },
     { label: 'Nimco Hampers', icon: '🎁', title: 'Nimco Hampers' }
   ];
+
+  // Append any extra unique categories present in products
+  const productCategories = Array.from(new Set(products.map(p => p.category).filter(Boolean)));
+  const extraCategories = productCategories
+    .filter(cat => !baseCategories.some(b => b.label === cat))
+    .map(cat => ({ label: cat, icon: '🏷️', title: cat }));
+
+  const categories = [...baseCategories, ...extraCategories];
 
   const getCategoryCount = (catLabel) => {
     if (catLabel === 'All') return products.length;

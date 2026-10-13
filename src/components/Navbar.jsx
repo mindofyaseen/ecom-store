@@ -105,45 +105,47 @@ export const Navbar = () => {
     <header className="w-full sticky top-0 z-40 shadow-sm bg-[#F9F3EC]">
       
       {/* 1. TOP ANNOUNCEMENT BAR (Exact Reference Styling) */}
-      <div className="bg-[#1C0A02] text-[#F9F3EC] text-xs font-medium py-2 px-4 sm:px-8 border-b border-[#311A0A]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
-          {/* Left: Location */}
-          <div className="flex items-center gap-1.5 text-[#F9F3EC]/90 text-[11px] sm:text-xs">
-            <MapPin className="w-3.5 h-3.5 text-[#ECB85A]" />
-            <span>{siteConfig?.announcementLocation || 'Karachi, Pakistan'}</span>
+      {siteConfig?.showAnnouncementBar !== false && (
+        <div className="bg-[#1C0A02] text-[#F9F3EC] text-xs font-medium py-2 px-4 sm:px-8 border-b border-[#311A0A]">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            
+            {/* Left: Location */}
+            <div className="flex items-center gap-1.5 text-[#F9F3EC]/90 text-[11px] sm:text-xs">
+              <MapPin className="w-3.5 h-3.5 text-[#ECB85A]" />
+              <span>{siteConfig?.announcementLocation || 'Karachi, Pakistan'}</span>
+            </div>
+
+            {/* Center: Nationwide Delivery & Bulk/Export */}
+            <div className="hidden md:flex items-center gap-2 text-center text-[#F9F3EC]/95 tracking-wide text-[11px] sm:text-xs">
+              <Truck className="w-3.5 h-3.5 text-[#ECB85A]" />
+              <span>{siteConfig?.announcementText || 'Nationwide Delivery | Bulk Orders | Export Orders'}</span>
+            </div>
+
+            {/* Right: WhatsApp Contact */}
+            <div className="flex items-center gap-3">
+              <a
+                href={`https://wa.me/${siteConfig?.whatsappNumber || whatsappNumber}?text=Assalam-o-Alaikum!%20I%20want%20to%20order%20from%20${encodeURIComponent(siteConfig?.storeName || 'Khandani Nimco')}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 text-[#F9F3EC] hover:text-[#ECB85A] transition-colors text-[11px] sm:text-xs font-semibold"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#25D366]" />
+                <span>{siteConfig?.announcementPhone || siteConfig?.phoneNumber || '+92 324 2478108'}</span>
+              </a>
+
+              {/* Quick Admin Access Icon */}
+              <button
+                onClick={openAdminPanel}
+                className="text-[#ECB85A] hover:text-[#DD8F25] transition-colors p-1 rounded hover:bg-white/10"
+                title="Admin Panel"
+              >
+                <Lock className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
           </div>
-
-          {/* Center: Nationwide Delivery & Bulk/Export */}
-          <div className="hidden md:flex items-center gap-2 text-center text-[#F9F3EC]/95 tracking-wide text-[11px] sm:text-xs">
-            <Truck className="w-3.5 h-3.5 text-[#ECB85A]" />
-            <span>{siteConfig?.announcementText || 'Nationwide Delivery | Bulk Orders | Export Orders'}</span>
-          </div>
-
-          {/* Right: WhatsApp Contact */}
-          <div className="flex items-center gap-3">
-            <a
-              href={`https://wa.me/${siteConfig?.whatsappNumber || whatsappNumber}?text=Assalam-o-Alaikum!%20I%20want%20to%20order%20from%20${encodeURIComponent(siteConfig?.storeName || 'Khandani Nimco')}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 text-[#F9F3EC] hover:text-[#ECB85A] transition-colors text-[11px] sm:text-xs font-semibold"
-            >
-              <Phone className="w-3.5 h-3.5 text-[#25D366]" />
-              <span>{siteConfig?.announcementPhone || siteConfig?.phoneNumber || '+92 324 2478108'}</span>
-            </a>
-
-            {/* Quick Admin Access Icon */}
-            <button
-              onClick={openAdminPanel}
-              className="text-[#ECB85A] hover:text-[#DD8F25] transition-colors p-1 rounded hover:bg-white/10"
-              title="Admin Panel"
-            >
-              <Lock className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
         </div>
-      </div>
+      )}
 
       {/* 2. MAIN NAVIGATION BAR */}
       <nav className="border-b border-[#D3C6B4]/80 px-4 sm:px-8 py-2 md:py-3 transition-colors bg-[#F9F3EC]">

@@ -14,10 +14,9 @@ export const BrandLogo = ({ size = "md", className = "", variant = "badge" }) =>
   // Determine active logo image source
   let logoSrc = siteConfig?.logoUrl || '/assets/brand/khandani_logo_badge.png';
 
-  // If in footer or requested transparent on dark surface
   if (variant === 'transparent') {
-    logoSrc = '/assets/brand/khandani_logo_clean.png';
-  } else if (variant === 'badge') {
+    logoSrc = siteConfig?.logoVariant === 'transparent' ? siteConfig.logoUrl : (siteConfig?.logoUrl || '/assets/brand/khandani_logo_clean.png');
+  } else {
     logoSrc = siteConfig?.logoUrl || '/assets/brand/khandani_logo_badge.png';
   }
 

@@ -46,10 +46,10 @@ export const BrandStorySection = () => {
           <div className="lg:col-span-3 flex flex-col items-center justify-center p-4 border-t lg:border-t-0 lg:border-l border-[#D3C6B4]/60">
             <div className="text-center relative select-none">
               <span className="font-serif italic text-2xl sm:text-3xl font-black text-[#311A0A] tracking-tight block transform -rotate-3">
-                Desi Swad
+                {siteConfig?.storyBadgeText ? siteConfig.storyBadgeText.split('\n')[0] : 'Desi Swad'}
               </span>
               <span className="font-serif italic text-xl sm:text-2xl font-bold text-[#6A330E] block transform -rotate-3 mt-1">
-                Har Ghar Tak
+                {siteConfig?.storyBadgeText && siteConfig.storyBadgeText.split('\n')[1] ? siteConfig.storyBadgeText.split('\n')[1] : 'Har Ghar Tak'}
               </span>
               <div className="mt-3 flex items-center justify-center gap-2 text-[#AF7F47] text-xs font-bold uppercase tracking-wider">
                 <span className="h-[1px] w-6 bg-[#AF7F47]" />
