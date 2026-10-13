@@ -52,12 +52,17 @@ export const AdminDashboard = () => {
     setReceiptModalOrder,
     setTrackingModalOrder,
     generateWhatsAppLink,
-    logoutAdmin
+    logoutAdmin,
+    changeAdminPassword
   } = useStore();
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'products' | 'coupons' | 'analytics' | 'feedbacks'
   const [orderStatusFilter, setOrderStatusFilter] = useState('All');
   const [orderSearch, setOrderSearch] = useState('');
+  const [isChangePassOpen, setIsChangePassOpen] = useState(false);
+  const [oldPasswordInput, setOldPasswordInput] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [passChangeMsg, setPassChangeMsg] = useState(null);
   const [productSearch, setProductSearch] = useState('');
   
   // Product Modal State
@@ -216,6 +221,18 @@ export const AdminDashboard = () => {
             >
               <span>View Storefront</span>
               <span>➔</span>
+            </button>
+            <button
+              onClick={() => {
+                setPassChangeMsg(null);
+                setOldPasswordInput('');
+                setNewPasswordInput('');
+                setIsChangePassOpen(true);
+              }}
+              className="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition-colors"
+              title="Change Admin Password"
+            >
+              <span>🔑 Password</span>
             </button>
             <button
               onClick={logoutAdmin}
@@ -1031,6 +1048,94 @@ export const AdminDashboard = () => {
                   className="px-5 py-2 bg-amber-500 text-slate-950 font-black rounded-xl"
                 >
                   Create Code
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: CHANGE ADMIN PASSWORD */}
+      {isChangePassOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-black text-white flex items-center gap-2">
+                <span>🔑 Change Admin Password</span>
+              </h3>
+              <button
+                onClick={() => setIsChangePassOpen(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const res = changeAdminPassword(oldPasswordInput.trim(), newPasswordInput.trim());
+                setPassChangeMsg(res);
+                if (res.success) {
+                  setTimeout(() => {
+                    setIsChangePassOpen(false);
+                    setPassChangeMsg(null);
+                  }, 1500);
+                }
+              }}
+              className="space-y-3 text-xs"
+            >
+              <div>
+                <label className="text-slate-400 font-bold block mb-1">Current Password *</label>
+                <input
+                  required
+                  type="password"
+                  placeholder="Enter current password..."
+                  value={oldPasswordInput}
+                  onChange={(e) => setOldPasswordInput(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="text-slate-400 font-bold block mb-1">New Password (Min 6 Characters) *</label>
+                <input
+                  required
+                  minLength={6}
+                  type="password"
+                  placeholder="Enter new password..."
+                  value={newPasswordInput}
+                  onChange={(e) => setNewPasswordInput(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400 font-mono"
+                />
+              </div>
+
+              {passChangeMsg && (
+                <div
+                  className={`p-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${
+                    passChangeMsg.success
+                      ? 'bg-emerald-950/70 border border-emerald-800 text-emerald-300'
+                      : 'bg-rose-950/70 border border-rose-800 text-rose-300'
+                  }`}
+                >
+                  <span>{passChangeMsg.success ? '✓' : '⚠️'}</span>
+                  <span>{passChangeMsg.message || passChangeMsg.error}</span>
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsChangePassOpen(false)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow"
+                >
+                  Save Password
                 </button>
               </div>
             </form>

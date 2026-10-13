@@ -72,7 +72,9 @@ export const StoreProvider = ({ children }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
     return sessionStorage.getItem('khandani_nimco_admin_auth') === 'true';
   });
-  const [adminPassword] = useState('admin123'); // Default admin password
+  const [adminPassword, setAdminPassword] = useState(() => {
+    return localStorage.getItem('khandani_nimco_admin_pin') || 'admin123';
+  });
   const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
 
   const openAdminPanel = () => {
@@ -360,6 +362,18 @@ export const StoreProvider = ({ children }) => {
     setIsAdminLoggedIn(false);
     sessionStorage.removeItem('khandani_nimco_admin_auth');
     setViewMode('store');
+  };
+
+  const changeAdminPassword = (oldPin, newPin) => {
+    if (oldPin !== adminPassword) {
+      return { success: false, error: 'Current password is incorrect.' };
+    }
+    if (!newPin || newPin.trim().length < 6) {
+      return { success: false, error: 'New password must be at least 6 characters long.' };
+    }
+    setAdminPassword(newPin.trim());
+    localStorage.setItem('khandani_nimco_admin_pin', newPin.trim());
+    return { success: true, message: 'Admin password successfully updated!' };
   };
 
   // Wishlist functions
@@ -734,6 +748,7 @@ export const StoreProvider = ({ children }) => {
         initiateCheckout,
         isAdminLoggedIn,
         verifyAdminPassword,
+        changeAdminPassword,
         logoutAdmin,
         isAdminAuthModalOpen,
         setIsAdminAuthModalOpen,

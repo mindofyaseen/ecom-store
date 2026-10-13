@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, KeyRound, ArrowRight, X, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Lock, KeyRound, ArrowRight, X, AlertCircle, ShieldAlert } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const AdminPasswordModal = ({ isOpen, onClose }) => {
-  const { verifyAdminPassword, setViewMode, isAdminAuthModalOpen, setIsAdminAuthModalOpen, siteConfig } = useStore();
+  const { verifyAdminPassword, isAdminAuthModalOpen, setIsAdminAuthModalOpen, siteConfig } = useStore();
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [lockoutRemaining, setLockoutRemaining] = useState(0);
 
   // If isOpen is explicitly passed as prop, use that; otherwise use global state
   const shouldShow = isOpen !== undefined ? isOpen : isAdminAuthModalOpen;
+
+  // Countdown timer if locked out
+  useEffect(() => {
+    if (lockoutRemaining <= 0) return;
+    const interval = setInterval(() => {
+      setLockoutRemaining((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [lockoutRemaining]);
 
   if (!shouldShow) return null;
 
@@ -22,15 +33,26 @@ export const AdminPasswordModal = ({ isOpen, onClose }) => {
 
   const handleUnlock = (e) => {
     e.preventDefault();
+    if (lockoutRemaining > 0) return;
+
     const success = verifyAdminPassword(pin.trim());
     if (success) {
       setError(false);
       setPin('');
+      setFailedAttempts(0);
       setIsAdminAuthModalOpen(false);
       if (onClose) onClose();
     } else {
+      const newAttempts = failedAttempts + 1;
+      setFailedAttempts(newAttempts);
       setError(true);
       setPin('');
+
+      // Anti brute-force lockout after 5 consecutive failures
+      if (newAttempts >= 5) {
+        setLockoutRemaining(60); // 60 seconds lockout
+        setFailedAttempts(0);
+      }
     }
   };
 
@@ -69,14 +91,17 @@ export const AdminPasswordModal = ({ isOpen, onClose }) => {
                 autoFocus
                 required
                 type="password"
-                placeholder="Enter Admin Password..."
+                disabled={lockoutRemaining > 0}
+                placeholder={lockoutRemaining > 0 ? `Locked for ${lockoutRemaining}s` : "Enter Admin Password..."}
                 value={pin}
                 onChange={(e) => {
                   setPin(e.target.value);
                   setError(false);
                 }}
                 className={`w-full bg-slate-950 border rounded-2xl py-3 pl-10 pr-4 text-sm text-center font-mono tracking-widest text-white focus:outline-none transition-all ${
-                  error
+                  lockoutRemaining > 0
+                    ? 'border-rose-900 opacity-60 cursor-not-allowed'
+                    : error
                     ? 'border-rose-500 ring-2 ring-rose-500/20'
                     : 'border-slate-700 focus:border-amber-500'
                 }`}
@@ -84,24 +109,34 @@ export const AdminPasswordModal = ({ isOpen, onClose }) => {
               <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
             </div>
 
-            {error && (
-              <p className="text-xs text-rose-400 flex items-center justify-center gap-1 font-medium animate-shake">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>Incorrect password! Default: <strong>admin123</strong></span>
+            {lockoutRemaining > 0 ? (
+              <p className="text-xs text-rose-400 flex items-center justify-center gap-1.5 font-medium">
+                <ShieldAlert className="w-4 h-4 text-rose-500 shrink-0" />
+                <span>Security lockout active. Try again in {lockoutRemaining}s.</span>
               </p>
-            )}
+            ) : error ? (
+              <p className="text-xs text-rose-400 flex items-center justify-center gap-1 font-medium">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>Incorrect password! Attempts: {failedAttempts}/5</span>
+              </p>
+            ) : null}
 
             <button
               type="submit"
-              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              disabled={lockoutRemaining > 0}
+              className={`w-full font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all ${
+                lockoutRemaining > 0
+                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                  : 'bg-amber-500 hover:bg-amber-400 text-slate-950 transform hover:-translate-y-0.5 active:translate-y-0'
+              }`}
             >
-              <span>Unlock Admin Panel</span>
+              <span>{lockoutRemaining > 0 ? `Please Wait (${lockoutRemaining}s)` : 'Unlock Admin Panel'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-800">
-            Default Password: <code className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">admin123</code>
+          <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-800 flex items-center justify-center gap-1.5">
+            <span>🛡️ Protected by 60s Brute-Force Rate Limiter</span>
           </div>
 
         </motion.div>
