@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { MapPin, Phone, Mail, MessageSquare, Send, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, CheckCircle2, Clock, MessageCircle } from 'lucide-react';
 
 export const ContactPage = () => {
-  const { whatsappNumber, generateWhatsAppLink } = useStore();
+  const { whatsappNumber, siteConfig } = useStore();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -13,171 +13,215 @@ export const ContactPage = () => {
     message: ''
   });
 
+  const activeWhatsapp = siteConfig?.whatsappNumber || whatsappNumber;
+  const storeName = siteConfig?.storeName || 'Khandani Nimco';
+  const displayPhone = siteConfig?.phoneNumber || '+92 324 2478108';
+  const displayEmail = siteConfig?.supportEmail || 'info@khandaninimco.pk';
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.name || !form.phone || !form.message) return;
+    
+    const text = encodeURIComponent(
+      `Assalam-o-Alaikum! *Contact Form Message for ${storeName}*\n\n` +
+      `*Name:* ${form.name}\n` +
+      `*Phone:* ${form.phone}\n` +
+      `*City:* ${form.city}\n` +
+      `*Subject:* ${form.subject}\n` +
+      `*Message:* ${form.message}`
+    );
+    window.open(`https://wa.me/${activeWhatsapp}?text=${text}`, '_blank');
+    
     setSubmitted(true);
     setForm({ name: '', phone: '', city: 'Karachi', subject: 'General Inquiry', message: '' });
     setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
-    <div className="min-h-screen bg-[#fbf8f2] py-12 text-[#2b1810] font-sans">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="min-h-screen bg-[#F9F3EC] py-10 sm:py-14 text-[#311A0A] font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-10">
         
         {/* Header */}
         <div className="text-center space-y-3">
-          <span className="bg-[#f5ece0] text-[#78350f] text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-flex items-center gap-1.5 border border-[#d8c3ad]">
-            <Sparkles className="w-3.5 h-3.5 text-[#e5a842]" />
-            Hum Aapki Khidmat Mein Hazir Hain
+          <span className="text-[#6A330E] text-xs font-bold uppercase tracking-[0.2em] block font-serif">
+            WE ARE AT YOUR SERVICE
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-[#200e08] font-serif">
-            Contact Khandani Nimco Store
+          <h1 className="text-3xl sm:text-5xl font-black text-[#311A0A] font-serif">
+            Contact {storeName}
           </h1>
-          <p className="text-xs sm:text-sm text-[#715442] max-w-xl mx-auto">
-            Shaadi, bulk gifting, corporate boxes, ya live delivery tracking ke silsile mein hamare Burns Road Karachi head office se rabta karein.
+          <p className="text-xs sm:text-sm text-[#544333] max-w-xl mx-auto leading-relaxed">
+            For retail queries, order assistance, bulk party hampers, or export orders, our central Karachi office is always ready to assist.
           </p>
         </div>
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Outlet Info Column */}
-          <div className="lg:col-span-5 space-y-4">
+          {/* Outlets & Contact Info (5 cols) */}
+          <div className="lg:col-span-5 space-y-5">
             
-            <div className="bg-white border border-[#eaddcb] p-6 rounded-3xl space-y-4 shadow-sm">
-              <h3 className="text-base font-black text-[#200e08] font-serif">
-                Khandani Nimco Central Outlets:
+            <div className="bg-white border border-[#D3C6B4] p-6 rounded-xl space-y-4 shadow-sm">
+              <h3 className="text-base font-bold text-[#311A0A] font-serif">
+                Central Locations:
               </h3>
 
               <div className="space-y-3 text-xs">
-                <div className="p-3.5 rounded-2xl bg-[#faf5ec] border border-[#eaddcb] flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#78350f] flex-shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-[#F9F3EC] border border-[#D3C6B4] flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#6A330E] flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#200e08] block text-xs">Flagship Outlet - Burns Road</strong>
-                    <span className="text-[#715442]">Shop #14, Heritage Food Street, Burns Road, Saddar, Karachi</span>
+                    <strong className="text-[#311A0A] block text-xs">Flagship Outlet</strong>
+                    <span className="text-[#544333]">{siteConfig?.storeAddress || 'Burns Road / Saddar, Karachi, Pakistan'}</span>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#faf5ec] border border-[#eaddcb] flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#78350f] flex-shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-lg bg-[#F9F3EC] border border-[#D3C6B4] flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#6A330E] flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#200e08] block text-xs">Bohri Bazaar Saddar</strong>
-                    <span className="text-[#715442]">Shop #4, Main Bohri Bazaar, Saddar Town, Karachi</span>
+                    <strong className="text-[#311A0A] block text-xs">Dispatch & Fulfillment Center</strong>
+                    <span className="text-[#544333]">Plot 42-B, Industrial Area / Central Cargo Hub, Karachi</span>
                   </div>
                 </div>
+              </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#faf5ec] border border-[#eaddcb] flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#78350f] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-[#200e08] block text-xs">PECHS Tariq Road Branch</strong>
-                    <span className="text-[#715442]">Block 2 Main Commercial Boulevard, PECHS, Karachi</span>
-                  </div>
+              <div className="pt-2 border-t border-[#D3C6B4]/60 space-y-2 text-xs">
+                <div className="flex items-center gap-2.5 text-[#544333]">
+                  <Phone className="w-4 h-4 text-[#6A330E]" />
+                  <span>Call & WhatsApp: <strong className="text-[#311A0A]">{displayPhone}</strong></span>
+                </div>
+                <div className="flex items-center gap-2.5 text-[#544333]">
+                  <Mail className="w-4 h-4 text-[#6A330E]" />
+                  <span>Email: <strong className="text-[#311A0A]">{displayEmail}</strong></span>
+                </div>
+                <div className="flex items-center gap-2.5 text-[#544333]">
+                  <Clock className="w-4 h-4 text-[#6A330E]" />
+                  <span>Hours: Mon - Sun, 9:00 AM - 11:00 PM</span>
                 </div>
               </div>
             </div>
 
-            {/* Direct Connect Card */}
-            <div className="bg-[#1c0f0a] text-white p-6 rounded-3xl space-y-3 shadow-xl border-2 border-[#c8913c]/40">
-              <h3 className="font-black text-sm text-[#e5a842] font-serif">
-                Instant WhatsApp Helpline
-              </h3>
-              <p className="text-xs text-[#ecd8c3]/90 leading-relaxed font-normal">
-                Hamari customer care team 5 minute ke andar WhatsApp par foran jawab deti hai.
+            {/* Direct WhatsApp Quick Card */}
+            <div className="bg-[#311A0A] text-[#F9F3EC] p-6 rounded-xl border border-[#6A330E] shadow-sm space-y-3">
+              <h4 className="font-bold font-serif text-sm text-[#ECB85A]">
+                Need Urgent Delivery or Bulk Order?
+              </h4>
+              <p className="text-xs text-[#F0E3D1]/85 leading-relaxed">
+                Chat directly with our team on WhatsApp for immediate order confirmation, live order tracking, or customized gift packaging.
               </p>
               <a
-                href={generateWhatsAppLink("Assalam-o-Alaikum! Mujhe Khandani Nimco ke bare mein maloomat chahiye.")}
+                href={`https://wa.me/${activeWhatsapp}?text=Assalam-o-Alaikum!%20I%20have%20an%20urgent%20query%20for%20${encodeURIComponent(storeName)}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-extrabold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95 text-center"
+                className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-xs shadow transition-colors"
               >
-                <MessageSquare className="w-4 h-4 fill-white" />
-                <span>Chat on WhatsApp (+{whatsappNumber})</span>
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>Chat on WhatsApp ({displayPhone})</span>
               </a>
             </div>
 
           </div>
 
-          {/* Contact Form Column */}
-          <div className="lg:col-span-7 bg-white border border-[#eaddcb] p-6 sm:p-8 rounded-3xl shadow-sm space-y-5">
-            
-            <div>
-              <h3 className="text-lg font-black text-[#200e08] font-serif">
-                Send Us a Message
-              </h3>
-              <p className="text-xs text-[#715442]">
-                Apna paigham darj karein, hamari management team foran rabta karegi.
-              </p>
-            </div>
+          {/* Form Column (7 cols) */}
+          <div className="lg:col-span-7 bg-white border border-[#D3C6B4] p-6 sm:p-8 rounded-xl shadow-sm">
+            <h3 className="text-xl font-bold font-serif text-[#311A0A] mb-1">
+              Send Us a Message
+            </h3>
+            <p className="text-xs text-[#544333] mb-6">
+              Fill in your inquiry details below and our customer support team will get back to you promptly.
+            </p>
 
             {submitted && (
-              <div className="p-3 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center gap-2 text-xs font-bold border border-emerald-300">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                <span>Shukriya! Aapka message receive ho chuka hai. Hamari team foran rabta karegi.</span>
+              <div className="mb-6 p-4 rounded-lg bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Your message has been dispatched to our support team on WhatsApp!</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#200e08] block mb-1">Your Full Name *</label>
+                  <label className="block text-xs font-bold text-[#311A0A] mb-1">
+                    Your Name *
+                  </label>
                   <input
-                    required
                     type="text"
-                    placeholder="e.g. Asad Siddiqui"
+                    required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full bg-[#faf5ec] border border-[#eaddcb] rounded-xl p-3 text-xs text-[#200e08] focus:outline-none focus:ring-1 focus:ring-[#c8913c]"
+                    placeholder="e.g. Asad Khan"
+                    className="w-full bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg p-2.5 text-xs text-[#311A0A] focus:outline-none focus:border-[#311A0A]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-[#200e08] block mb-1">Phone / WhatsApp *</label>
+                  <label className="block text-xs font-bold text-[#311A0A] mb-1">
+                    Mobile / WhatsApp *
+                  </label>
                   <input
-                    required
                     type="tel"
-                    placeholder="0300 1234567"
+                    required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full bg-[#faf5ec] border border-[#eaddcb] rounded-xl p-3 text-xs text-[#200e08] focus:outline-none focus:ring-1 focus:ring-[#c8913c]"
+                    placeholder="0324-XXXXXXX"
+                    className="w-full bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg p-2.5 text-xs text-[#311A0A] focus:outline-none focus:border-[#311A0A]"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-[#200e08] block mb-1">Subject</label>
-                <select
-                  value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                  className="w-full bg-[#faf5ec] border border-[#eaddcb] rounded-xl p-3 text-xs text-[#200e08] focus:outline-none focus:ring-1 focus:ring-[#c8913c]"
-                >
-                  <option value="General Inquiry">General Inquiry</option>
-                  <option value="Wholesale & Bulk Order">Wholesale & Bulk Order</option>
-                  <option value="Export Inquiry">Export Inquiry</option>
-                  <option value="Delivery Issue">Delivery Issue</option>
-                  <option value="Feedback & Suggestion">Feedback & Suggestion</option>
-                </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-[#311A0A] mb-1">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    value={form.city}
+                    onChange={(e) => setForm({ ...form, city: e.target.value })}
+                    placeholder="Karachi, Lahore, Islamabad..."
+                    className="w-full bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg p-2.5 text-xs text-[#311A0A] focus:outline-none focus:border-[#311A0A]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#311A0A] mb-1">
+                    Inquiry Subject
+                  </label>
+                  <select
+                    value={form.subject}
+                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    className="w-full bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg p-2.5 text-xs text-[#311A0A] focus:outline-none focus:border-[#311A0A]"
+                  >
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Order Tracking">Order Tracking & Status</option>
+                    <option value="Bulk / Party Orders">Bulk / Party Orders</option>
+                    <option value="Export Question">Export Question</option>
+                    <option value="Feedback / Quality">Feedback & Suggestion</option>
+                  </select>
+                </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#200e08] block mb-1">Your Message *</label>
+                <label className="block text-xs font-bold text-[#311A0A] mb-1">
+                  Message Details *
+                </label>
                 <textarea
-                  required
                   rows={4}
-                  placeholder="Apna sawal ya requirement yahan likhein..."
+                  required
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full bg-[#faf5ec] border border-[#eaddcb] rounded-xl p-3 text-xs text-[#200e08] focus:outline-none focus:ring-1 focus:ring-[#c8913c]"
+                  placeholder="How can we assist you today? Please mention your order number or product requirements..."
+                  className="w-full bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg p-2.5 text-xs text-[#311A0A] focus:outline-none focus:border-[#311A0A]"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="bg-[#200e08] hover:bg-[#34180d] text-[#e5a842] font-black px-6 py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all"
-              >
-                <Send className="w-4 h-4" />
-                <span>Submit Message</span>
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  className="bg-[#ECB85A] hover:bg-[#DD8F25] text-[#1C0A02] font-black text-xs px-6 py-3 rounded-lg shadow transition-all inline-flex items-center gap-2 transform hover:-translate-y-0.5"
+                >
+                  <Send className="w-4 h-4 text-[#1C0A02]" />
+                  <span>Send Message via WhatsApp</span>
+                </button>
+              </div>
             </form>
 
           </div>

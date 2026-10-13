@@ -39,7 +39,8 @@ export const ProductDetailPage = () => {
     initiateCheckout,
     selectedCity,
     currentCityInfo,
-    addProductReview
+    addProductReview,
+    siteConfig
   } = useStore();
 
   const product = products.find((p) => p.id === selectedProductId) || products[0];
@@ -114,61 +115,61 @@ export const ProductDetailPage = () => {
   const isOutOfStock = product.stock <= 0;
 
   return (
-    <div className="min-h-screen bg-[#fcf8f2] py-8 text-gray-900 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="min-h-screen bg-[#F9F3EC] py-8 text-[#311A0A] font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs text-amber-800 font-medium">
+        <nav className="flex items-center gap-2 text-xs text-[#6A330E] font-medium">
           <button
             onClick={() => navigateTo('home')}
-            className="hover:text-amber-950 hover:underline"
+            className="hover:text-[#311A0A] hover:underline"
           >
             Home
           </button>
-          <ChevronRight className="w-3.5 h-3.5 text-amber-600" />
+          <ChevronRight className="w-3.5 h-3.5 text-[#AF7F47]" />
           <button
             onClick={() => navigateTo('shop')}
-            className="hover:text-amber-950 hover:underline"
+            className="hover:text-[#311A0A] hover:underline"
           >
-            Shop Snacks
+            Shop Nimco
           </button>
-          <ChevronRight className="w-3.5 h-3.5 text-amber-600" />
-          <span className="text-amber-900/60">{product.category}</span>
-          <ChevronRight className="w-3.5 h-3.5 text-amber-600" />
-          <span className="font-bold text-amber-950 truncate max-w-xs">{product.name}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-[#AF7F47]" />
+          <span className="text-[#544333]/70">{product.category}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-[#AF7F47]" />
+          <span className="font-bold text-[#311A0A] truncate max-w-xs">{product.name}</span>
         </nav>
 
         {/* Back Button */}
         <button
           onClick={() => navigateTo('shop')}
-          className="inline-flex items-center gap-2 text-xs font-bold text-amber-900 bg-amber-100/70 hover:bg-amber-200/80 px-3.5 py-1.5 rounded-xl border border-amber-300/60 transition-all"
+          className="inline-flex items-center gap-2 text-xs font-bold text-[#311A0A] bg-[#F0E3D1] hover:bg-[#D3C6B4] px-3.5 py-1.5 rounded-lg border border-[#D3C6B4] transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Products</span>
+          <span>Back to All Nimco</span>
         </button>
 
         {/* Main Product Showcase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 bg-white border border-amber-800/15 rounded-3xl p-6 sm:p-10 shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 bg-white border border-[#D3C6B4] rounded-2xl p-6 sm:p-10 shadow-sm">
           
           {/* Left Column: Image Gallery */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-amber-50 border border-amber-200/60 shadow-inner group">
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#F9F3EC] border border-[#D3C6B4] p-4 flex items-center justify-center group">
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
               />
               
               {/* Badges Overlay */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 {product.badge && (
-                  <span className="bg-yellow-400 text-amber-950 font-black text-xs uppercase px-3 py-1 rounded-full shadow-md">
+                  <span className="bg-[#ECB85A] text-[#1C0A02] font-black text-xs uppercase px-3 py-1 rounded-full shadow-sm">
                     {product.badge}
                   </span>
                 )}
                 {product.spiceLevel && (
-                  <span className="bg-amber-950/80 backdrop-blur-sm text-yellow-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow">
-                    <Flame className="w-3.5 h-3.5 text-red-400" />
+                  <span className="bg-[#1C0A02]/85 backdrop-blur-sm text-[#ECB85A] text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow">
+                    <Flame className="w-3.5 h-3.5 text-[#ECB85A]" />
                     {product.spiceLevel}
                   </span>
                 )}
@@ -214,53 +215,53 @@ export const ProductDetailPage = () => {
             
             <div className="space-y-4">
               {/* Category, Rating & SKU */}
-              <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-amber-800">
-                <span className="bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px]">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span className="bg-[#F0E3D1] text-[#311A0A] px-3 py-1 rounded-md font-bold uppercase tracking-wider text-[10px]">
                   {product.category}
                 </span>
 
-                <div className="flex items-center gap-1.5 text-amber-500 font-bold">
+                <div className="flex items-center gap-1.5 text-[#ECB85A] font-bold">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <Star key={i} className="w-4 h-4 fill-[#ECB85A] text-[#ECB85A]" />
                     ))}
                   </div>
-                  <span className="text-gray-900 font-black">{product.rating}</span>
-                  <span className="text-gray-500 text-[11px]">({product.reviewsCount} customer reviews)</span>
+                  <span className="text-[#311A0A] font-black">{product.rating}</span>
+                  <span className="text-[#544333] text-[11px]">({product.reviewsCount} customer reviews)</span>
                 </div>
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl sm:text-4xl font-black text-amber-950 tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-bold font-serif text-[#311A0A] tracking-tight leading-tight">
                 {product.name}
               </h1>
 
               {/* Price Calculation */}
               <div className="flex items-baseline gap-3 pt-1">
-                <span className="text-3xl sm:text-4xl font-black text-amber-900">
+                <span className="text-3xl sm:text-4xl font-black text-[#311A0A]">
                   {formatPrice(unitPrice)}
                 </span>
                 <span className="text-sm text-gray-400 line-through">
                   {formatPrice(originalPrice)}
                 </span>
-                <span className="bg-emerald-100 text-emerald-800 text-xs font-black px-2.5 py-0.5 rounded-full uppercase">
+                <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase">
                   Save 15%
                 </span>
               </div>
 
               {/* Short description */}
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <p className="text-sm text-[#544333] leading-relaxed">
                 {product.description}
               </p>
 
               {/* Pack Weight Options */}
-              <div className="space-y-2 pt-2 border-t border-gray-100">
+              <div className="space-y-2 pt-2 border-t border-[#D3C6B4]/60">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-black text-amber-950 uppercase tracking-wider flex items-center gap-1.5">
-                    <Scale className="w-4 h-4 text-amber-700" />
+                  <span className="font-bold text-[#311A0A] uppercase tracking-wider flex items-center gap-1.5">
+                    <Scale className="w-4 h-4 text-[#6A330E]" />
                     Select Pack Size:
                   </span>
-                  <span className="text-amber-800 font-bold">Selected: {selectedWeight.label}</span>
+                  <span className="text-[#6A330E] font-bold">Selected: {selectedWeight.label}</span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2.5">
@@ -272,14 +273,14 @@ export const ProductDetailPage = () => {
                         key={opt.label}
                         type="button"
                         onClick={() => setSelectedWeight(opt)}
-                        className={`p-3 rounded-2xl border-2 text-center transition-all ${
+                        className={`p-3 rounded-lg border text-center transition-all ${
                           isSelected
-                            ? 'bg-amber-900 text-yellow-300 border-amber-900 shadow-md transform -translate-y-0.5'
-                            : 'bg-amber-50/50 text-gray-800 border-amber-200/80 hover:border-amber-400 hover:bg-white'
+                            ? 'bg-[#311A0A] text-[#F9F3EC] border-[#311A0A] shadow-sm transform -translate-y-0.5'
+                            : 'bg-white text-[#544333] border-[#D3C6B4] hover:border-[#6A330E] hover:bg-[#F9F3EC]'
                         }`}
                       >
                         <span className="block font-bold text-xs">{opt.label}</span>
-                        <span className={`block text-xs font-black mt-0.5 ${isSelected ? 'text-white' : 'text-amber-900'}`}>
+                        <span className={`block text-xs font-bold mt-0.5 ${isSelected ? 'text-[#ECB85A]' : 'text-[#311A0A]'}`}>
                           {formatPrice(optPrice)}
                         </span>
                       </button>
@@ -291,20 +292,20 @@ export const ProductDetailPage = () => {
               {/* Quantity Counter & Stock Status */}
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-gray-700">Quantity:</span>
-                  <div className="flex items-center bg-gray-100 border border-gray-300 rounded-xl overflow-hidden">
+                  <span className="text-xs font-bold text-[#544333]">Quantity:</span>
+                  <div className="flex items-center bg-[#F9F3EC] border border-[#D3C6B4] rounded-lg overflow-hidden">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="p-2 text-gray-600 hover:text-black hover:bg-gray-200"
+                      className="p-2 text-[#311A0A] hover:bg-[#F0E3D1]"
                     >
                       <Minus className="w-3.5 h-3.5" />
                     </button>
-                    <span className="px-3.5 text-xs font-black text-gray-900 min-w-[28px] text-center">
+                    <span className="px-3.5 text-xs font-bold text-[#311A0A] min-w-[28px] text-center">
                       {quantity}
                     </span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="p-2 text-gray-600 hover:text-black hover:bg-gray-200"
+                      className="p-2 text-[#311A0A] hover:bg-[#F0E3D1]"
                     >
                       <Plus className="w-3.5 h-3.5" />
                     </button>
@@ -326,38 +327,38 @@ export const ProductDetailPage = () => {
               </div>
 
               {/* Delivery Estimation Box for City */}
-              <div className="bg-amber-50/70 border border-amber-200/80 p-3.5 rounded-2xl text-xs space-y-1.5">
-                <div className="flex items-center justify-between font-bold text-amber-950">
+              <div className="bg-[#F0E3D1]/50 border border-[#D3C6B4] p-3.5 rounded-xl text-xs space-y-1.5">
+                <div className="flex items-center justify-between font-bold text-[#311A0A]">
                   <span className="flex items-center gap-1.5">
-                    <Truck className="w-4 h-4 text-amber-800" />
+                    <Truck className="w-4 h-4 text-[#6A330E]" />
                     Delivering to {selectedCity}:
                   </span>
-                  <span className="text-emerald-700 font-extrabold">
+                  <span className="text-emerald-700 font-bold">
                     {currentCityInfo?.deliveryEstimate || '24-48 Hours'}
                   </span>
                 </div>
-                <p className="text-gray-600 text-[11px]">
-                  Order within next <strong className="text-amber-950">3 hours</strong> for same-day dispatch. Cash on Delivery available!
+                <p className="text-[#544333] text-[11px]">
+                  Order within next <strong className="text-[#311A0A]">3 hours</strong> for same-day dispatch. Cash on Delivery available!
                 </p>
               </div>
 
             </div>
 
             {/* CTAs / Purchase Buttons */}
-            <div className="space-y-3 pt-4 border-t border-gray-100">
+            <div className="space-y-3 pt-4 border-t border-[#D3C6B4]/60">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Add to Basket */}
                 <button
                   disabled={isOutOfStock}
                   onClick={handleAddToCart}
-                  className={`py-3.5 px-6 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
+                  className={`py-3.5 px-6 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 ${
                     isOutOfStock
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-amber-950'
+                      : 'bg-[#ECB85A] hover:bg-[#DD8F25] text-[#1C0A02]'
                   }`}
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 text-[#1C0A02]" />
                   <span>{addedToast ? 'Added to Basket!' : `Add to Cart - ${formatPrice(totalPrice)}`}</span>
                 </button>
 
@@ -365,9 +366,9 @@ export const ProductDetailPage = () => {
                 <button
                   disabled={isOutOfStock}
                   onClick={handleBuyNow}
-                  className="py-3.5 px-6 rounded-2xl font-black text-xs sm:text-sm bg-amber-950 hover:bg-amber-900 text-yellow-300 flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
+                  className="py-3.5 px-6 rounded-lg font-bold text-xs sm:text-sm bg-[#311A0A] hover:bg-[#1C0A02] text-[#F9F3EC] flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
                 >
-                  <PackageCheck className="w-4 h-4 text-yellow-400" />
+                  <PackageCheck className="w-4 h-4 text-[#ECB85A]" />
                   <span>Buy Now (Express)</span>
                 </button>
               </div>
@@ -375,12 +376,11 @@ export const ProductDetailPage = () => {
               {/* Direct WhatsApp Order */}
               <button
                 onClick={handleWhatsAppOrder}
-                className="w-full py-3 px-6 rounded-2xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-3 px-6 rounded-lg font-bold text-xs bg-[#25D366] hover:bg-[#20ba5a] text-white flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
-                <span>Quick Order via WhatsApp Helpline</span>
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>Quick Order on WhatsApp ({siteConfig?.phoneNumber || '+92 324 2478108'})</span>
               </button>
-
             </div>
 
           </div>
@@ -388,10 +388,10 @@ export const ProductDetailPage = () => {
         </div>
 
         {/* Detailed Tabs & Accordion Section */}
-        <div className="bg-white border border-amber-800/15 rounded-3xl p-6 sm:p-10 shadow-lg space-y-6">
+        <div className="bg-white border border-[#D3C6B4] rounded-2xl p-6 sm:p-10 shadow-sm space-y-6">
           
           {/* Tab Headers */}
-          <div className="flex border-b border-gray-200 gap-6 overflow-x-auto pb-1">
+          <div className="flex border-b border-[#D3C6B4] gap-6 overflow-x-auto pb-1">
             {[
               { key: 'description', label: 'Taste Profile & Description' },
               { key: 'ingredients', label: 'Key Ingredients & Halal' },
@@ -401,10 +401,10 @@ export const ProductDetailPage = () => {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`pb-3 text-xs sm:text-sm font-black whitespace-nowrap border-b-2 transition-all ${
+                className={`pb-3 text-xs sm:text-sm font-bold whitespace-nowrap border-b-2 transition-all ${
                   activeTab === tab.key
-                    ? 'border-amber-800 text-amber-950'
-                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                    ? 'border-[#311A0A] text-[#311A0A]'
+                    : 'border-transparent text-[#544333] hover:text-[#311A0A]'
                 }`}
               >
                 {tab.label}
@@ -414,23 +414,23 @@ export const ProductDetailPage = () => {
 
           {/* Tab 1: Description */}
           {activeTab === 'description' && (
-            <div className="space-y-4 text-sm text-gray-700 leading-relaxed max-w-3xl">
-              <h3 className="text-lg font-black text-amber-950">
+            <div className="space-y-4 text-sm text-[#544333] leading-relaxed max-w-3xl">
+              <h3 className="text-lg font-bold font-serif text-[#311A0A]">
                 Authentic Karachi Heritage Recipe
               </h3>
               <p>
                 {product.description} Hand-crafted with centuries-old frying and spice-blending traditions perfected at Burns Road, Karachi.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/60 space-y-1">
-                  <h4 className="font-bold text-xs text-amber-950">Crispness Retention</h4>
-                  <p className="text-xs text-gray-600">
+                <div className="p-4 rounded-xl bg-[#F9F3EC] border border-[#D3C6B4] space-y-1">
+                  <h4 className="font-bold text-xs text-[#311A0A]">Crispness Retention</h4>
+                  <p className="text-xs text-[#544333]">
                     Nitrogen flushed sealed packets ensure the crunch stays intact for up to 90 days from the packaging date.
                   </p>
                 </div>
-                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/60 space-y-1">
-                  <h4 className="font-bold text-xs text-amber-950">Serving Suggestion</h4>
-                  <p className="text-xs text-gray-600">
+                <div className="p-4 rounded-xl bg-[#F9F3EC] border border-[#D3C6B4] space-y-1">
+                  <h4 className="font-bold text-xs text-[#311A0A]">Serving Suggestion</h4>
+                  <p className="text-xs text-[#544333]">
                     Pairs deliciously with evening Karak Chai, Kashmiri Pink Tea, or served as a welcoming snack for guests.
                   </p>
                 </div>

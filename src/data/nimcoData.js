@@ -103,7 +103,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Best Seller",
     isPopular: true,
     stock: 95,
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/mix-nimco.png",
     description: "Signature Burns Road Special Mix Nimco with crispy sev, fried lentils, roasted peanuts, and authentic aromatic spices.",
     ingredients: "Gram Flour, Peanuts, Moong Lentils, Spices, Pure Edible Oil."
   },
@@ -123,7 +123,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Classic Tea Snack",
     isPopular: true,
     stock: 80,
-    image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/mota-gathiya.png",
     description: "Thick, tender-crisp gram flour gathiya delicately seasoned with carom seeds (Ajwain) and black pepper.",
     ingredients: "Pure Besan (Gram Flour), Ajwain, Black Pepper, Edible Oil, Sea Salt."
   },
@@ -143,7 +143,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Crispy Crunch",
     isPopular: true,
     stock: 75,
-    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/bareek-gathiya.png",
     description: "Thin delicate gathiya threads with ultra-crisp texture. Dissolves easily in mouth with hot tea.",
     ingredients: "Fine Gram Flour, Carom Seeds, Cumin, Edible Oil, Salt."
   },
@@ -163,7 +163,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Crunch Ribbon",
     isPopular: true,
     stock: 85,
-    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/papri-gathiya.png",
     description: "Flat ribbon-shaped crispy gathiya. Light, crunchy, and seasoned with gentle carom spice.",
     ingredients: "Gram Flour, White Carom, Salt, Refined Oil."
   },
@@ -183,7 +183,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Fresh Batch",
     isPopular: true,
     stock: 70,
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/sew.png",
     description: "Fine golden besan sev noodles fried to crispy perfection. Ideal for evening chai and homemade chaats.",
     ingredients: "Gram Flour, Turmeric, Salt, Pure Oil."
   },
@@ -203,7 +203,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Everyday Crunch",
     isPopular: true,
     stock: 90,
-    image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/medium-sew.png",
     description: "Standard medium-gauge crunchy gram flour sev with authentic savory seasoning.",
     ingredients: "Gram Flour, Red Chili, Salt, Edible Oil."
   },
@@ -223,7 +223,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Teekha Special",
     isPopular: true,
     stock: 65,
-    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/lal-gathiya.png",
     description: "Spicy red chili coated crispy gathiya. Burns Road special punch for those who love hot snacks.",
     ingredients: "Gram Flour, Kashmiri Red Chili, Ajwain, Chaat Masala, Oil."
   },
@@ -243,7 +243,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Favorite Crunch",
     isPopular: true,
     stock: 55,
-    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/toppops.png",
     description: "Airy crispy golden spheres dusted with tangy chatpata masala. A legendary nostalgic Pakistani snack.",
     ingredients: "Corn Meal, Rice Meal, Chaat Spices, Rock Salt, Edible Oil."
   },
@@ -263,7 +263,7 @@ export const INITIAL_PRODUCTS = [
     badge: "High Protein",
     isPopular: true,
     stock: 80,
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/dal-mung.png",
     description: "Golden split yellow moong lentils lightly fried and salted. Incredibly crunchy, light, and protein-packed.",
     ingredients: "Yellow Moong Lentils, Himalayan Rock Salt, Edible Vegetable Oil."
   },
@@ -283,7 +283,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Burns Road Star",
     isPopular: true,
     stock: 85,
-    image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/dal-muth.png",
     description: "Crispy fried whole moth lentils mixed with micro-fine sev and tangy chaat masala.",
     ingredients: "Moth Lentils, Gram Flour Sev, Amchur, Cumin, Black Salt."
   },
@@ -303,7 +303,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Savory Crunch",
     isPopular: true,
     stock: 70,
-    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/dal-chana.png",
     description: "Crunchy fried split Bengal gram seasoned with tart amchur, cumin, and red chili.",
     ingredients: "Split Bengal Gram (Chana Dal), Spices, Rock Salt, Oil."
   },
@@ -323,7 +323,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Khatta Meetha",
     isPopular: true,
     stock: 75,
-    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/metha-chewra.png",
     description: "Crispy flattened rice flakes combined with golden raisins, peanuts, and delicate sweet-tangy spices.",
     ingredients: "Flattened Rice (Poha), Peanuts, Raisins, Sugar, Amchur, Edible Oil."
   },
@@ -343,7 +343,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Traditional Poha",
     isPopular: true,
     stock: 80,
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/namkeen-chewra.png",
     description: "Salty, spiced crispy flattened rice with crunchy peanuts, roasted lentils, and aromatic curry leaves.",
     ingredients: "Poha, Peanuts, Mustard Seeds, Curry Leaves, Turmeric, Salt."
   },
@@ -363,7 +363,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Air Crisps",
     isPopular: true,
     stock: 85,
-    image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/phulki.png",
     description: "Feather-light golden puffs made from chickpea batter. Crispy dry snack or perfect for Dahi Phulki.",
     ingredients: "Chickpea Flour, Baking Soda, Cumin, Rock Salt, Oil."
   },
@@ -383,7 +383,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Chaat Essential",
     isPopular: true,
     stock: 90,
-    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/chat-papri.png",
     description: "Flaky circular crisp wafers fried to shatter-crunch texture with carom seed fragrance. Perfect for Papri Chaat.",
     ingredients: "Refined Flour, Semolina, Ajwain, Sea Salt, Pure Oil."
   },
@@ -403,7 +403,7 @@ export const INITIAL_PRODUCTS = [
     badge: "Low Calorie",
     isPopular: true,
     stock: 65,
-    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80",
+    image: "/assets/products/kala-chana.png",
     description: "Sand-roasted whole black chickpeas with natural brown skin. Healthy, crunchy, and high in plant fiber.",
     ingredients: "Whole Black Chickpeas, Sea Salt."
   },

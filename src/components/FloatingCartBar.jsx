@@ -21,28 +21,28 @@ export const FloatingCartBar = () => {
       >
         <button
           onClick={() => setIsCartOpen(true)}
-          className="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-emerald-950 font-black p-3.5 sm:p-4 rounded-2xl shadow-2xl border-2 border-emerald-900/30 flex items-center justify-between group transform hover:-translate-y-1 transition-all"
+          className="w-full bg-[#311A0A] hover:bg-[#1C0A02] text-[#F9F3EC] font-bold p-3.5 sm:p-4 rounded-xl shadow-2xl border border-[#ECB85A]/40 flex items-center justify-between group transform hover:-translate-y-0.5 transition-all"
         >
           {/* Left item counter */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#042f2e] text-amber-300 flex items-center justify-center font-black text-sm shadow-inner relative">
-              <ShoppingBag className="w-5 h-5 text-amber-400" />
-              <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#042f2e] font-extrabold animate-bounce">
+            <div className="w-10 h-10 rounded-lg bg-[#ECB85A] text-[#311A0A] flex items-center justify-center font-bold text-sm shadow relative">
+              <ShoppingBag className="w-5 h-5 text-[#311A0A]" />
+              <span className="absolute -top-1.5 -right-1.5 bg-[#DD8F25] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#311A0A] font-extrabold">
                 {totalCartCount}
               </span>
             </div>
             <div className="text-left">
-              <span className="text-[11px] uppercase tracking-wider block font-bold text-emerald-900 -mb-0.5">
+              <span className="text-[10px] uppercase tracking-wider block font-semibold text-[#ECB85A] font-serif">
                 Khandani Nimco Cart
               </span>
-              <span className="text-base sm:text-lg font-black text-emerald-950 font-mono">
+              <span className="text-base sm:text-lg font-bold text-[#F9F3EC]">
                 {formatPrice(cartGrandTotal)}
               </span>
             </div>
           </div>
 
           {/* Right action button */}
-          <div className="flex items-center gap-1.5 bg-[#042f2e] text-amber-300 px-4 py-2 rounded-xl text-xs font-black shadow-md group-hover:bg-[#064e3b] transition-colors">
+          <div className="flex items-center gap-1.5 bg-[#ECB85A] text-[#311A0A] px-4 py-2 rounded-lg text-xs font-bold shadow-md group-hover:bg-[#DD8F25] transition-colors">
             <span>View Cart</span>
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </div>

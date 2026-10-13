@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, Lock, KeyRound, ArrowRight, X, AlertCircle } from 'lucide-react';
+import { Lock, KeyRound, ArrowRight, X, AlertCircle, ShieldCheck } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const AdminPasswordModal = ({ isOpen, onClose }) => {
-  const { verifyAdminPassword, setViewMode } = useStore();
+  const { verifyAdminPassword, setViewMode, isAdminAuthModalOpen, setIsAdminAuthModalOpen, siteConfig } = useStore();
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
 
-  if (!isOpen) return null;
+  // If isOpen is explicitly passed as prop, use that; otherwise use global state
+  const shouldShow = isOpen !== undefined ? isOpen : isAdminAuthModalOpen;
+
+  if (!shouldShow) return null;
+
+  const handleClose = () => {
+    setIsAdminAuthModalOpen(false);
+    setError(false);
+    setPin('');
+    if (onClose) onClose();
+  };
 
   const handleUnlock = (e) => {
     e.preventDefault();
-    const success = verifyAdminPassword(pin);
+    const success = verifyAdminPassword(pin.trim());
     if (success) {
       setError(false);
-      setViewMode('admin');
-      onClose();
+      setPin('');
+      setIsAdminAuthModalOpen(false);
+      if (onClose) onClose();
     } else {
       setError(true);
       setPin('');
@@ -33,28 +44,29 @@ export const AdminPasswordModal = ({ isOpen, onClose }) => {
           className="relative w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 text-slate-100 shadow-2xl space-y-5 text-center"
         >
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
           >
             <X className="w-5 h-5" />
           </button>
 
           <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto shadow-inner">
-            <Lock className="w-7 h-7" />
+            <Lock className="w-7 h-7 text-amber-400" />
           </div>
 
           <div>
-            <h3 className="text-lg font-black text-white">
-              Admin Access Protected
+            <h3 className="text-lg font-black text-white font-serif">
+              {siteConfig?.storeName || 'Khandani Nimco'} Admin Panel
             </h3>
             <p className="text-xs text-slate-400 mt-1">
-              Enter authorized administrator password to manage store inventory, orders & settings.
+              Store inventory, live customizer & order management access ke liye password darj karein.
             </p>
           </div>
 
           <form onSubmit={handleUnlock} className="space-y-3">
             <div className="relative">
               <input
+                autoFocus
                 required
                 type="password"
                 placeholder="Enter Admin Password..."
@@ -73,23 +85,23 @@ export const AdminPasswordModal = ({ isOpen, onClose }) => {
             </div>
 
             {error && (
-              <p className="text-xs text-rose-400 flex items-center justify-center gap-1 font-medium">
+              <p className="text-xs text-rose-400 flex items-center justify-center gap-1 font-medium animate-shake">
                 <AlertCircle className="w-3.5 h-3.5" />
-                Incorrect password! Try: <strong>admin123</strong>
+                <span>Incorrect password! Default: <strong>admin123</strong></span>
               </p>
             )}
 
             <button
               type="submit"
-              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
+              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>Unlock Admin Panel</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-800">
-            Default credentials for demonstration: <code className="text-amber-400 font-mono">admin123</code>
+          <div className="text-[11px] text-slate-500 pt-2 border-t border-slate-800">
+            Default Password: <code className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">admin123</code>
           </div>
 
         </motion.div>

@@ -1,12 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_COUPONS, INITIAL_FEEDBACKS, CITIES_LIST } from '../data/nimcoData';
+import { DEFAULT_SITE_CONFIG } from '../data/siteConfig';
 
 const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
+  // Site Configuration state for full customizability
+  const [siteConfig, setSiteConfig] = useState(() => {
+    const saved = localStorage.getItem('khandani_nimco_site_config_v1');
+    if (saved) {
+      try {
+        return { ...DEFAULT_SITE_CONFIG, ...JSON.parse(saved) };
+      } catch (e) {
+        console.error('Failed to parse saved site config', e);
+      }
+    }
+    return DEFAULT_SITE_CONFIG;
+  });
+
   // Products state with localStorage persistence
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('khandani_nimco_pure_products');
+    const saved = localStorage.getItem('khandani_nimco_pure_products_v3');
     return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
   });
 
@@ -59,11 +73,20 @@ export const StoreProvider = ({ children }) => {
     return sessionStorage.getItem('khandani_nimco_admin_auth') === 'true';
   });
   const [adminPassword] = useState('admin123'); // Default admin password
+  const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
 
-  // Minimum Order Limit & Settings
-  const [minOrderLimit, setMinOrderLimit] = useState(200); // Minimum order limit in PKR
-  const [freeShippingMin, setFreeShippingMin] = useState(1500);
-  const [whatsappNumber, setWhatsappNumber] = useState('923001234567');
+  const openAdminPanel = () => {
+    if (isAdminLoggedIn) {
+      setViewMode('admin');
+    } else {
+      setIsAdminAuthModalOpen(true);
+    }
+  };
+
+  // Minimum Order Limit & Settings (synced with siteConfig)
+  const [minOrderLimit, setMinOrderLimit] = useState(siteConfig.minOrderLimit || 200);
+  const [freeShippingMin, setFreeShippingMin] = useState(siteConfig.freeShippingThreshold || 1500);
+  const [whatsappNumber, setWhatsappNumber] = useState(siteConfig.whatsappNumber || '923242478108');
 
   // Multi-Page Routing
   const [currentPage, setCurrentPage] = useState('home'); // 'home' | 'shop' | 'product-detail' | 'track-order' | 'about' | 'contact'
@@ -96,7 +119,33 @@ export const StoreProvider = ({ children }) => {
 
   // Save changes to LocalStorage
   useEffect(() => {
-    localStorage.setItem('khandani_nimco_pure_products', JSON.stringify(products));
+    localStorage.setItem('khandani_nimco_site_config_v1', JSON.stringify(siteConfig));
+    if (siteConfig.minOrderLimit) setMinOrderLimit(siteConfig.minOrderLimit);
+    if (siteConfig.freeShippingThreshold) setFreeShippingMin(siteConfig.freeShippingThreshold);
+    if (siteConfig.whatsappNumber) setWhatsappNumber(siteConfig.whatsappNumber);
+  }, [siteConfig]);
+
+  const updateSiteConfig = (updates) => {
+    setSiteConfig(prev => {
+      const merged = { ...prev };
+      Object.keys(updates).forEach(key => {
+        if (typeof updates[key] === 'object' && !Array.isArray(updates[key]) && updates[key] !== null) {
+          merged[key] = { ...prev[key], ...updates[key] };
+        } else {
+          merged[key] = updates[key];
+        }
+      });
+      return merged;
+    });
+  };
+
+  const resetSiteConfig = () => {
+    setSiteConfig(DEFAULT_SITE_CONFIG);
+    localStorage.removeItem('khandani_nimco_site_config_v1');
+  };
+
+  useEffect(() => {
+    localStorage.setItem('khandani_nimco_pure_products_v3', JSON.stringify(products));
   }, [products]);
 
   useEffect(() => {
@@ -300,6 +349,8 @@ export const StoreProvider = ({ children }) => {
     if (pin === adminPassword) {
       setIsAdminLoggedIn(true);
       sessionStorage.setItem('khandani_nimco_admin_auth', 'true');
+      setIsAdminAuthModalOpen(false);
+      setViewMode('admin');
       return true;
     }
     return false;
@@ -658,6 +709,10 @@ export const StoreProvider = ({ children }) => {
         addCoupon,
         deleteCoupon,
         updateOrderStatus,
+        // Site Configuration & Live Customization
+        siteConfig,
+        updateSiteConfig,
+        resetSiteConfig,
         // Multi-page Routing & Auth
         currentPage,
         setCurrentPage,
@@ -679,7 +734,10 @@ export const StoreProvider = ({ children }) => {
         initiateCheckout,
         isAdminLoggedIn,
         verifyAdminPassword,
-        logoutAdmin
+        logoutAdmin,
+        isAdminAuthModalOpen,
+        setIsAdminAuthModalOpen,
+        openAdminPanel
       }}
     >
       {children}

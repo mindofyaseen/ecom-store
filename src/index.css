@@ -1,38 +1,120 @@
 @import "tailwindcss";
 
+:root {
+  --color-cream: #F9F3EC;
+  --color-beige: #F0E3D1;
+  --color-chocolate: #311A0A;
+  --color-espresso: #1C0A02;
+  --color-rich-brown: #6A330E;
+  --color-gold: #ECB85A;
+  --color-amber: #DD8F25;
+  --color-bronze: #AF7F47;
+  --color-border: #D3C6B4;
+  --color-text-primary: #311A0A;
+  --color-text-secondary: #544333;
+  --color-text-light: #F9F3EC;
+  --color-whatsapp: #25D366;
+}
+
 @layer base {
   body {
-    background-color: #fbf8f2;
-    color: #2b1810;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-text-primary);
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, .font-heading {
-    font-family: 'Outfit', Georgia, serif;
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-editorial {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-/* Custom scrollbar styling in Warm Espresso & Golden Ochre */
+/* Custom Nimco Heritage Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5eee4;
+  background: var(--color-beige);
 }
 ::-webkit-scrollbar-thumb {
-  background: #a16207;
+  background: var(--color-rich-brown);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #78350f;
+  background: var(--color-chocolate);
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
+/* Global Button & Accent Utilities */
+.btn-gold {
+  background-color: var(--color-gold);
+  color: var(--color-espresso);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.btn-gold:hover {
+  background-color: var(--color-amber);
+  transform: translateY(-1px);
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2.5s infinite ease-in-out;
+.btn-chocolate {
+  background-color: var(--color-chocolate);
+  color: var(--color-cream);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.btn-chocolate:hover {
+  background-color: var(--color-espresso);
+  transform: translateY(-1px);
 }
 
+.btn-whatsapp {
+  background-color: var(--color-whatsapp);
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.btn-whatsapp:hover {
+  background-color: #20ba5a;
+  transform: translateY(-1px);
+}
+
+/* Scalloped & Card borders */
+.border-warm {
+  border-color: var(--color-border);
+}
+
+.card-warm {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(49, 26, 10, 0.04);
+  transition: all 0.25s ease;
+}
+.card-warm:hover {
+  box-shadow: 0 6px 16px rgba(49, 26, 10, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Flourish divider line */
+.divider-flourish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.divider-flourish::before,
+.divider-flourish::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background-color: var(--color-border);
+}

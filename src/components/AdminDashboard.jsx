@@ -24,8 +24,10 @@ import {
   MessageCircle,
   MessageSquarePlus,
   Sparkles,
-  Percent
+  Percent,
+  Palette
 } from 'lucide-react';
+import { SiteCustomizerTab } from './SiteCustomizerTab';
 
 export const AdminDashboard = () => {
   const {
@@ -49,7 +51,8 @@ export const AdminDashboard = () => {
     setViewMode,
     setReceiptModalOrder,
     setTrackingModalOrder,
-    generateWhatsAppLink
+    generateWhatsAppLink,
+    logoutAdmin
   } = useStore();
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'products' | 'coupons' | 'analytics' | 'feedbacks'
@@ -206,13 +209,20 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => setViewMode('store')}
               className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md transition-colors"
             >
               <span>View Storefront</span>
               <span>➔</span>
+            </button>
+            <button
+              onClick={logoutAdmin}
+              className="bg-slate-800 hover:bg-rose-950/60 hover:text-rose-300 text-slate-300 border border-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition-colors"
+              title="Lock Admin Session"
+            >
+              <span>🔒 Lock</span>
             </button>
           </div>
 
@@ -278,6 +288,18 @@ export const AdminDashboard = () => {
           >
             <MessageSquarePlus className="w-4 h-4" />
             <span>Customer Feedbacks ({feedbacks?.length || 0})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('customizer')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'customizer'
+                ? 'bg-amber-500 text-slate-950 shadow-md ring-2 ring-amber-300'
+                : 'bg-slate-800/90 text-amber-400 hover:text-amber-300 hover:bg-slate-800 border border-amber-500/30'
+            }`}
+          >
+            <Palette className="w-4 h-4" />
+            <span>🎨 Site Customizer (Live Branding)</span>
           </button>
         </div>
       </header>
@@ -773,6 +795,11 @@ export const AdminDashboard = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {/* TAB 6: 🎨 MASTER SITE CUSTOMIZER */}
+        {activeTab === 'customizer' && (
+          <SiteCustomizerTab />
         )}
 
       </main>

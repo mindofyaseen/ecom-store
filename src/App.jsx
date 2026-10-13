@@ -7,6 +7,8 @@ import { ProductDetailPage } from './components/ProductDetailPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { AboutPage } from './components/AboutPage';
 import { ContactPage } from './components/ContactPage';
+import { BulkOrdersPage } from './components/BulkOrdersPage';
+import { ExportPage } from './components/ExportPage';
 import { AdminDashboard } from './components/AdminDashboard';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
@@ -18,6 +20,7 @@ import { FeedbackModal } from './components/FeedbackModal';
 import { FloatingCartBar } from './components/FloatingCartBar';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { Footer } from './components/Footer';
+import { AdminPasswordModal } from './components/AdminPasswordModal';
 
 const MainRouter = () => {
   const { viewMode, currentPage } = useStore();
@@ -33,7 +36,7 @@ const MainRouter = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] flex flex-col font-sans selection:bg-amber-400 selection:text-emerald-950">
+    <div className="min-h-screen bg-[#F9F3EC] text-[#311A0A] flex flex-col font-sans selection:bg-[#ECB85A] selection:text-[#1C0A02]">
       
       {/* Navigation Header */}
       <Navbar />
@@ -42,6 +45,8 @@ const MainRouter = () => {
       <div className="flex-1">
         {currentPage === 'home' && <HomePage />}
         {currentPage === 'shop' && <ShopPage />}
+        {currentPage === 'bulk-orders' && <BulkOrdersPage />}
+        {currentPage === 'export' && <ExportPage />}
         {currentPage === 'product-detail' && <ProductDetailPage />}
         {currentPage === 'track-order' && <TrackOrderPage />}
         {currentPage === 'about' && <AboutPage />}
@@ -61,6 +66,7 @@ const MainRouter = () => {
       <AuthModal />
       <FeedbackModal />
       <WhatsAppButton />
+      <AdminPasswordModal />
 
     </div>
   );

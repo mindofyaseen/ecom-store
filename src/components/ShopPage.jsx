@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from './ProductCard';
-import { Search, Filter, SlidersHorizontal, ArrowUpDown, Sparkles, PackageSearch, X } from 'lucide-react';
+import { CategoryFilter } from './CategoryFilter';
+import { Search, Filter, ArrowUpDown, X, Sparkles, PackageSearch } from 'lucide-react';
 
 export const ShopPage = () => {
   const {
@@ -31,7 +32,7 @@ export const ShopPage = () => {
     'Nimco Hampers'
   ];
 
-  const spiceLevels = ['All', 'Mild', 'Medium', 'Hot & Spicy', 'Extra Spicy', 'Sweet'];
+  const spiceLevels = ['All', 'Mild', 'Medium', 'Hot & Spicy', 'Chatpata', 'Sweet & Savory'];
 
   // Filter & Sort Logic
   const filteredProducts = products
@@ -45,7 +46,7 @@ export const ShopPage = () => {
         searchQuery === '' ||
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase());
+        (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesSpice = selectedSpice === 'All' || p.spiceLevel === selectedSpice;
       const matchesPrice = p.price <= maxPrice;
 
@@ -59,98 +60,97 @@ export const ShopPage = () => {
     });
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] py-8 text-gray-900 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <div className="min-h-screen bg-[#F9F3EC] text-[#311A0A]">
+      
+      {/* Category Pills Strip */}
+      <CategoryFilter />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
         
-        {/* Page Title & Breadcrumb */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#eaddcb] pb-4">
+        {/* Page Title & Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D3C6B4] pb-5">
           <div>
-            <span className="text-xs font-bold text-[#a16207] uppercase tracking-widest block font-serif">
-              Khandani Nimco Official Store Catalog - Asli Karachi Ka Zaiqa
+            <span className="text-xs font-bold text-[#6A330E] uppercase tracking-widest block font-serif">
+              Authentic Pakistani Nimco Collection
             </span>
-            <h1 className="text-2xl sm:text-4xl font-black text-[#200e08] font-serif">
-              {showWishlistOnly ? 'My Favorite Nimco' : activeCategory === 'All' ? 'All Traditional Nimco Snacks' : `${activeCategory} Collection`}
+            <h1 className="text-2xl sm:text-4xl font-black font-serif text-[#311A0A]">
+              {showWishlistOnly ? 'My Favorite Nimco' : activeCategory === 'All' ? 'Our Popular Nimco Catalog' : `${activeCategory} Collection`}
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Mobile Filter Toggle */}
             <button
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-              className="lg:hidden px-4 py-2 bg-amber-900 text-yellow-300 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow"
+              className="lg:hidden px-4 py-2 bg-[#311A0A] text-[#F9F3EC] rounded-lg text-xs font-bold flex items-center gap-1.5 shadow"
             >
               <Filter className="w-4 h-4" />
               <span>Filters ({filteredProducts.length})</span>
             </button>
 
             {/* Sorting Dropdown */}
-            <div className="flex items-center gap-2 bg-white border border-amber-200/80 rounded-2xl px-3 py-1.5 text-xs shadow-sm">
-              <ArrowUpDown className="w-3.5 h-3.5 text-amber-800" />
+            <div className="flex items-center gap-2 bg-white border border-[#D3C6B4] rounded-lg px-3 py-1.5 text-xs shadow-sm">
+              <ArrowUpDown className="w-3.5 h-3.5 text-[#6A330E]" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-transparent font-bold text-amber-950 focus:outline-none cursor-pointer"
+                className="bg-transparent font-bold text-[#311A0A] focus:outline-none cursor-pointer"
               >
                 <option value="featured">Featured / Best Sellers</option>
-                <option value="rating">Highest Customer Rating</option>
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Customer Rated</option>
               </select>
             </div>
           </div>
         </div>
 
-        {/* Main Layout: Filter Sidebar + Products Grid */}
+        {/* Search Bar in Shop */}
+        <div className="relative max-w-md">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search within pure nimco products..."
+            className="w-full pl-9 pr-9 py-2 bg-white border border-[#D3C6B4] rounded-lg text-xs sm:text-sm text-[#311A0A] placeholder-[#544333]/60 focus:outline-none focus:border-[#311A0A]"
+          />
+          <Search className="w-4 h-4 text-[#6A330E] absolute left-3 top-2.5" />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-2.5 text-[#544333] hover:text-[#311A0A]"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Main Content Layout (Sidebar Filters + Products Grid) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Desktop Filter Sidebar */}
-          <aside className={`lg:col-span-3 bg-white border border-amber-800/15 rounded-3xl p-5 space-y-6 shadow-md ${
-            mobileFilterOpen ? 'block' : 'hidden lg:block'
-          }`}>
-            
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <h3 className="font-black text-sm text-amber-950 flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-amber-700" />
-                Filter Options
-              </h3>
-              {(activeCategory !== 'All' || selectedSpice !== 'All' || searchQuery !== '') && (
-                <button
-                  onClick={() => {
-                    setActiveCategory('All');
-                    setSelectedSpice('All');
-                    setSearchQuery('');
-                    setMaxPrice(3500);
-                  }}
-                  className="text-[11px] text-rose-600 hover:underline font-bold"
-                >
-                  Reset All
-                </button>
-              )}
-            </div>
-
-            {/* Search Input */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-gray-700 block">Search by keyword:</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="e.g. Kaju, Moth, Papri..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-amber-50/50 border border-amber-200 rounded-xl py-2 pl-8 pr-3 text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-amber-500"
-                />
-                <Search className="w-3.5 h-3.5 text-amber-600 absolute left-2.5 top-2.5" />
+          {/* Desktop Filter Sidebar (3 cols) */}
+          <div className="hidden lg:block lg:col-span-3 space-y-6 bg-white border border-[#D3C6B4] rounded-xl p-5 shadow-sm sticky top-24">
+            <div>
+              <div className="flex items-center justify-between mb-3 border-b border-[#F0E3D1] pb-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#311A0A] font-serif">
+                  Categories
+                </h3>
+                {(activeCategory !== 'All' || showWishlistOnly) && (
+                  <button
+                    onClick={() => {
+                      setActiveCategory('All');
+                      setShowWishlistOnly(false);
+                    }}
+                    className="text-[11px] font-bold text-[#6A330E] hover:underline"
+                  >
+                    Reset
+                  </button>
+                )}
               </div>
-            </div>
-
-            {/* Categories */}
-            <div className="space-y-2">
-              <label className="text-xs font-black text-amber-950 uppercase tracking-wider block">
-                Categories:
-              </label>
               <div className="space-y-1">
                 {categories.map((cat) => {
-                  const isSelected = !showWishlistOnly && activeCategory === cat;
                   const count = cat === 'All' ? products.length : products.filter((p) => p.category === cat).length;
+                  const active = activeCategory === cat && !showWishlistOnly;
                   return (
                     <button
                       key={cat}
@@ -158,15 +158,15 @@ export const ShopPage = () => {
                         setShowWishlistOnly(false);
                         setActiveCategory(cat);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-between transition-colors ${
-                        isSelected
-                          ? 'bg-amber-900 text-yellow-300 shadow-sm'
-                          : 'text-gray-700 hover:bg-amber-50'
+                      className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs font-semibold flex items-center justify-between transition-colors ${
+                        active
+                          ? 'bg-[#311A0A] text-[#F9F3EC]'
+                          : 'text-[#544333] hover:bg-[#F9F3EC] hover:text-[#311A0A]'
                       }`}
                     >
                       <span>{cat}</span>
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                        isSelected ? 'bg-yellow-400 text-amber-950' : 'bg-gray-100 text-gray-500'
+                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                        active ? 'bg-[#ECB85A] text-[#1C0A02]' : 'bg-[#F9F3EC] text-[#544333]'
                       }`}>
                         {count}
                       </span>
@@ -176,20 +176,20 @@ export const ShopPage = () => {
               </div>
             </div>
 
-            {/* Spice Levels */}
-            <div className="space-y-2 pt-2 border-t border-gray-100">
-              <label className="text-xs font-black text-amber-950 uppercase tracking-wider block">
-                Spice Preference:
-              </label>
+            {/* Spice Filter */}
+            <div className="border-t border-[#F0E3D1] pt-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#311A0A] font-serif mb-2.5">
+                Spice Flavor
+              </h3>
               <div className="flex flex-wrap gap-1.5">
                 {spiceLevels.map((spice) => (
                   <button
                     key={spice}
                     onClick={() => setSelectedSpice(spice)}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-colors ${
+                    className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors ${
                       selectedSpice === spice
-                        ? 'bg-amber-950 text-yellow-300 border-amber-950'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-amber-300'
+                        ? 'bg-[#6A330E] text-[#F9F3EC]'
+                        : 'bg-[#F9F3EC] text-[#544333] hover:bg-[#F0E3D1]'
                     }`}
                   >
                     {spice}
@@ -198,68 +198,55 @@ export const ShopPage = () => {
               </div>
             </div>
 
-            {/* Price Filter Slider */}
-            <div className="space-y-2 pt-2 border-t border-gray-100">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-black text-amber-950 uppercase tracking-wider">Max Price:</span>
-                <span className="font-black text-amber-900">Rs. {maxPrice}</span>
+            {/* Price Slider */}
+            <div className="border-t border-[#F0E3D1] pt-4">
+              <div className="flex justify-between text-xs font-bold text-[#311A0A] mb-1">
+                <span>Max Base Price</span>
+                <span>Rs. {maxPrice}</span>
               </div>
               <input
                 type="range"
-                min="200"
+                min="100"
                 max="3500"
                 step="50"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-amber-700 cursor-pointer"
+                className="w-full accent-[#311A0A] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-gray-400 font-semibold">
-                <span>Rs. 200</span>
-                <span>Rs. 3,500</span>
-              </div>
             </div>
+          </div>
 
-          </aside>
-
-          {/* Products Grid Column */}
-          <div className="lg:col-span-9 space-y-4">
-            
-            <div className="flex items-center justify-between text-xs text-gray-600 bg-white p-3 rounded-2xl border border-[#eaddcb] shadow-sm">
-              <span>
-                Showing <strong className="text-[#200e08] font-black">{filteredProducts.length}</strong> items matching your selection
-              </span>
-              <span className="text-[11px] text-[#16a34a] font-bold">
-                ⚡ Express Delivery across Pakistan
-              </span>
-            </div>
-
+          {/* Product Grid Area (9 cols) */}
+          <div className="lg:col-span-9">
             {filteredProducts.length === 0 ? (
-              <div className="bg-white border-2 border-dashed border-amber-800/20 rounded-3xl p-16 text-center space-y-4 shadow-sm">
-                <PackageSearch className="w-14 h-14 text-amber-700 mx-auto" />
-                <h3 className="text-lg font-bold text-amber-950">No snacks match your filters</h3>
-                <p className="text-xs text-gray-600 max-w-sm mx-auto">
-                  Try clearing the search query or adjusting your price and spice preferences.
+              <div className="bg-white border border-[#D3C6B4] rounded-2xl p-12 text-center space-y-3">
+                <PackageSearch className="w-12 h-12 text-[#6A330E] mx-auto opacity-70" />
+                <h3 className="text-lg font-bold font-serif text-[#311A0A]">No Nimco items match your filter</h3>
+                <p className="text-xs text-[#544333] max-w-sm mx-auto">
+                  Try adjusting your search keywords, category filter, or spice preferences.
                 </p>
-                <button
-                  onClick={() => {
-                    setActiveCategory('All');
-                    setSelectedSpice('All');
-                    setSearchQuery('');
-                    setMaxPrice(3500);
-                  }}
-                  className="bg-yellow-400 text-amber-950 font-black px-6 py-2.5 rounded-xl text-xs shadow hover:bg-yellow-300"
-                >
-                  Clear All Filters
-                </button>
+                <div className="pt-2">
+                  <button
+                    onClick={() => {
+                      setActiveCategory('All');
+                      setSelectedSpice('All');
+                      setMaxPrice(3500);
+                      setSearchQuery('');
+                      setShowWishlistOnly(false);
+                    }}
+                    className="bg-[#311A0A] text-[#F9F3EC] text-xs font-bold px-4 py-2 rounded-lg"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-3.5">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}
-
           </div>
 
         </div>

@@ -16,19 +16,19 @@ export const VoucherBanner = () => {
   };
 
   return (
-    <div className="bg-emerald-950/90 border-y border-emerald-800/80 py-2.5 px-4 sm:px-6">
+    <div className="bg-[#311A0A] border-y border-[#D3C6B4]/30 py-2.5 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         
         {/* Title */}
         <div className="flex items-center gap-2 flex-shrink-0 text-center md:text-left">
-          <div className="p-1.5 bg-amber-400 text-emerald-950 rounded-lg">
+          <div className="p-1.5 bg-[#ECB85A] text-[#311A0A] rounded-lg">
             <Flame className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-xs font-black text-amber-300 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-[#ECB85A] uppercase tracking-wider block font-serif">
               Khandani Nimco Today's Vouchers
             </span>
-            <span className="text-[11px] text-emerald-200">
+            <span className="text-[11px] text-[#F9F3EC]/80">
               Tap any coupon code to auto-apply & save instantly!
             </span>
           </div>
@@ -45,27 +45,27 @@ export const VoucherBanner = () => {
                 key={c.code}
                 type="button"
                 onClick={() => handleCopyAndApply(c.code)}
-                className={`flex-shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-sm ${
+                className={`flex-shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all shadow-sm ${
                   isApplied
-                    ? 'bg-amber-400 text-emerald-950 border-amber-300 shadow-amber-400/20 font-black'
-                    : 'bg-emerald-900/60 hover:bg-emerald-800 text-emerald-100 border-emerald-700/80 hover:border-amber-400'
+                    ? 'bg-[#ECB85A] text-[#311A0A] border-[#ECB85A] font-bold'
+                    : 'bg-white/10 hover:bg-white/15 text-[#F9F3EC] border-[#D3C6B4]/30 hover:border-[#ECB85A]'
                 }`}
               >
-                <Tag className={`w-3.5 h-3.5 ${isApplied ? 'text-emerald-950' : 'text-amber-400'}`} />
-                <span className={`font-mono tracking-wider font-extrabold ${isApplied ? 'text-emerald-950' : 'text-amber-300'}`}>
+                <Tag className={`w-3.5 h-3.5 ${isApplied ? 'text-[#311A0A]' : 'text-[#ECB85A]'}`} />
+                <span className={`font-mono tracking-wider font-extrabold ${isApplied ? 'text-[#311A0A]' : 'text-[#ECB85A]'}`}>
                   {c.code}
                 </span>
-                <span className={`text-[10px] border-l pl-1.5 ${isApplied ? 'border-emerald-950/40 text-emerald-900 font-bold' : 'border-emerald-700 text-emerald-200'}`}>
+                <span className={`text-[10px] border-l pl-1.5 ${isApplied ? 'border-[#311A0A]/40 text-[#311A0A] font-bold' : 'border-[#D3C6B4]/40 text-[#F9F3EC]/80'}`}>
                   {c.discountPercent ? `${c.discountPercent}% OFF` : c.isFreeShipping ? 'FREE SHIP' : `Rs. ${c.flatDiscount} OFF`}
                 </span>
                 {isApplied ? (
-                  <span className="text-[9px] bg-emerald-950 px-1.5 py-0.2 rounded text-amber-300 font-extrabold uppercase">
+                  <span className="text-[9px] bg-[#311A0A] px-1.5 py-0.2 rounded text-[#ECB85A] font-extrabold uppercase">
                     ACTIVE
                   </span>
                 ) : isCopied ? (
-                  <Check className="w-3.5 h-3.5 text-amber-400" />
+                  <Check className="w-3.5 h-3.5 text-[#ECB85A]" />
                 ) : (
-                  <Copy className="w-3 h-3 text-emerald-400 opacity-60" />
+                  <Copy className="w-3 h-3 text-[#ECB85A] opacity-60" />
                 )}
               </button>
             );

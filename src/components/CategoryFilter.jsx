@@ -29,8 +29,8 @@ export const CategoryFilter = () => {
   };
 
   return (
-    <div className="bg-[#fcf9f2] border-b border-[#eaddcb] py-3 sm:py-4 relative z-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-[#F0E3D1]/60 border-b border-[#D3C6B4] py-3 sm:py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         
         <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
           {/* Wishlist Quick Filter Pill */}
@@ -38,16 +38,16 @@ export const CategoryFilter = () => {
             onClick={() => {
               setShowWishlistOnly(!showWishlistOnly);
             }}
-            className={`flex-shrink-0 flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${
+            className={`flex-shrink-0 flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs font-bold transition-all border ${
               showWishlistOnly
-                ? 'bg-rose-600 text-white border-rose-500 shadow-rose-500/20 shadow-md scale-105'
-                : 'bg-white text-[#715442] border-[#eaddcb] hover:border-rose-400 hover:text-rose-600'
+                ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                : 'bg-white text-[#544333] border-[#D3C6B4] hover:border-rose-400 hover:text-rose-600'
             }`}
           >
             <Heart className={`w-3.5 h-3.5 ${showWishlistOnly ? 'fill-white' : 'text-rose-500'}`} />
             <span>My Favorites</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-              showWishlistOnly ? 'bg-rose-800 text-white' : 'bg-rose-100 text-rose-700'
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+              showWishlistOnly ? 'bg-rose-800 text-white' : 'bg-[#F9F3EC] text-rose-700'
             }`}>
               {wishlist.length}
             </span>
@@ -65,19 +65,19 @@ export const CategoryFilter = () => {
                   setShowWishlistOnly(false);
                   setActiveCategory(cat.label);
                 }}
-                className={`flex-shrink-0 flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm border ${
+                className={`flex-shrink-0 flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs font-bold transition-all border ${
                   isSelected
-                    ? 'bg-[#200e08] text-[#e5a842] border-[#200e08] shadow-md transform scale-105'
-                    : 'bg-white text-[#4a2e1d] border-[#eaddcb] hover:border-[#a16207] hover:bg-[#faf5ec]'
+                    ? 'bg-[#311A0A] text-[#F9F3EC] border-[#311A0A] shadow-sm'
+                    : 'bg-white text-[#544333] border-[#D3C6B4] hover:border-[#6A330E] hover:text-[#311A0A]'
                 }`}
               >
-                <span className="text-sm">{cat.icon}</span>
+                <span className="text-xs">{cat.icon}</span>
                 <span>{cat.title}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                     isSelected
-                      ? 'bg-[#e5a842] text-[#200e08]'
-                      : 'bg-[#f5ece0] text-[#78350f]'
+                      ? 'bg-[#ECB85A] text-[#1C0A02]'
+                      : 'bg-[#F9F3EC] text-[#544333]'
                   }`}
                 >
                   {count}
