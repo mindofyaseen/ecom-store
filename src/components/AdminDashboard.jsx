@@ -28,6 +28,7 @@ import {
   Palette
 } from 'lucide-react';
 import { SiteCustomizerTab } from './SiteCustomizerTab';
+import { ImageUploadField } from './ImageUploadField';
 
 export const AdminDashboard = () => {
   const {
@@ -918,15 +919,14 @@ export const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div>
-                <label className="text-slate-400 font-bold block mb-1">Image URL</label>
-                <input
-                  type="url"
-                  value={productForm.image}
-                  onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white"
-                />
-              </div>
+              <ImageUploadField
+                label="Product Photo"
+                value={productForm.image}
+                onChange={(newImg) => setProductForm({ ...productForm, image: newImg })}
+                maxDimension={800}
+                placeholder="https://... ya device se photo upload karein"
+                helpText="Apne computer ya mobile gallery se product photo select karein."
+              />
 
               <div>
                 <label className="text-slate-400 font-bold block mb-1">Description</label>

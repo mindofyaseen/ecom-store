@@ -146,6 +146,26 @@ export const StoreProvider = ({ children }) => {
     localStorage.removeItem('khandani_nimco_site_config_v1');
   };
 
+  const importStoreBackup = (backupData) => {
+    try {
+      if (backupData.siteConfig) {
+        setSiteConfig(prev => ({ ...prev, ...backupData.siteConfig }));
+        localStorage.setItem('khandani_nimco_site_config_v1', JSON.stringify(backupData.siteConfig));
+      }
+      if (backupData.products && Array.isArray(backupData.products)) {
+        setProducts(backupData.products);
+        localStorage.setItem('khandani_nimco_pure_products_v3', JSON.stringify(backupData.products));
+      }
+      if (backupData.coupons && Array.isArray(backupData.coupons)) {
+        setCoupons(backupData.coupons);
+        localStorage.setItem('khandani_nimco_coupons', JSON.stringify(backupData.coupons));
+      }
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem('khandani_nimco_pure_products_v3', JSON.stringify(products));
   }, [products]);
@@ -752,7 +772,8 @@ export const StoreProvider = ({ children }) => {
         logoutAdmin,
         isAdminAuthModalOpen,
         setIsAdminAuthModalOpen,
-        openAdminPanel
+        openAdminPanel,
+        importStoreBackup
       }}
     >
       {children}
