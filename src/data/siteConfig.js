@@ -22,7 +22,10 @@ export const DEFAULT_SITE_CONFIG = {
   freeShippingThreshold: 1500,
   currencySymbol: "Rs.",
 
-  // Hero Section
+  // Hero Section & Interactive Carousel
+  carouselEnabled: true,
+  carouselAutoplay: true,
+  carouselInterval: 5000,
   heroEyebrow: "TRADITIONAL PAKISTANI NIMCO",
   heroTitle: "Khandani Nimco",
   heroSubtitle: "Made for Every Occasion",
@@ -32,6 +35,47 @@ export const DEFAULT_SITE_CONFIG = {
   heroSecondaryCtaText: "WhatsApp Us",
   heroSecondaryCtaLink: "whatsapp",
   heroImageUrl: "/assets/reference/hero_food.jpg",
+  heroSlides: [
+    {
+      id: "slide-1",
+      eyebrow: "TRADITIONAL PAKISTANI NIMCO",
+      title: "Khandani Nimco",
+      subtitle: "Made for Every Occasion",
+      tagline: "Authentic taste • Premium quality • Freshly prepared",
+      badge: "⭐ Burns Road Heritage",
+      primaryCtaText: "Explore Collection",
+      primaryCtaLink: "shop",
+      secondaryCtaText: "WhatsApp Order",
+      secondaryCtaLink: "whatsapp",
+      imageUrl: "/assets/reference/hero_food.jpg"
+    },
+    {
+      id: "slide-2",
+      eyebrow: "FRESH CRUNCH EVERY DAY",
+      title: "Wholesale & Event Packs",
+      subtitle: "Weddings, Parties & Shops",
+      tagline: "Custom batch roasting • Bulk discount pricing • Nationwide delivery",
+      badge: "🎉 Event & Wholesale",
+      primaryCtaText: "Bulk Order Karein",
+      primaryCtaLink: "bulk-orders",
+      secondaryCtaText: "Call Helpline",
+      secondaryCtaLink: "tel",
+      imageUrl: "/assets/reference/wholesale_food.jpg"
+    },
+    {
+      id: "slide-3",
+      eyebrow: "TAKING PAKISTANI NIMCO",
+      title: "Beyond Borders",
+      subtitle: "International Export Supply",
+      tagline: "Vacuum-sealed freshness • Customs compliant • Worldwide cargo",
+      badge: "✈️ Worldwide Shipping",
+      primaryCtaText: "Export Inquiry",
+      primaryCtaLink: "export",
+      secondaryCtaText: "Chat on WhatsApp",
+      secondaryCtaLink: "whatsapp",
+      imageUrl: "/assets/reference/export_ship.jpg"
+    }
+  ],
 
   // Service Benefits Strip (4 blocks)
   benefits: [

@@ -24,7 +24,13 @@ import {
   Layers,
   Share2,
   Download,
-  UploadCloud
+  UploadCloud,
+  Plus,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Clock,
+  Play
 } from 'lucide-react';
 import { ImageUploadField } from './ImageUploadField';
 
@@ -124,10 +130,114 @@ export const SiteCustomizerTab = () => {
     if (e.target) e.target.value = '';
   };
 
+  const currentHeroSlides = (siteConfig.heroSlides && siteConfig.heroSlides.length > 0)
+    ? siteConfig.heroSlides
+    : [
+        {
+          id: "slide-1",
+          eyebrow: siteConfig.heroEyebrow || "TRADITIONAL PAKISTANI NIMCO",
+          title: siteConfig.heroTitle || (siteConfig.storeName || "Khandani Nimco"),
+          subtitle: siteConfig.heroSubtitle || "Made for Every Occasion",
+          tagline: siteConfig.heroTagline || "Authentic taste • Premium quality • Freshly prepared",
+          badge: "⭐ Burns Road Heritage",
+          primaryCtaText: siteConfig.heroPrimaryCtaText || "Explore Collection",
+          primaryCtaLink: siteConfig.heroPrimaryCtaLink || "shop",
+          secondaryCtaText: siteConfig.heroSecondaryCtaText || "WhatsApp Us",
+          secondaryCtaLink: siteConfig.heroSecondaryCtaLink || "whatsapp",
+          imageUrl: siteConfig.heroImageUrl || "/assets/reference/hero_food.jpg"
+        },
+        {
+          id: "slide-2",
+          eyebrow: "FRESH CRUNCH EVERY DAY",
+          title: "Wholesale & Event Packs",
+          subtitle: "Weddings, Parties & Shops",
+          tagline: "Custom batch roasting • Bulk discount pricing • Nationwide delivery",
+          badge: "🎉 Event & Wholesale",
+          primaryCtaText: "Bulk Order Karein",
+          primaryCtaLink: "bulk-orders",
+          secondaryCtaText: "Call Helpline",
+          secondaryCtaLink: "tel",
+          imageUrl: "/assets/reference/wholesale_food.jpg"
+        },
+        {
+          id: "slide-3",
+          eyebrow: "TAKING PAKISTANI NIMCO",
+          title: "Beyond Borders",
+          subtitle: "International Export Supply",
+          tagline: "Vacuum-sealed freshness • Customs compliant • Worldwide cargo",
+          badge: "✈️ Worldwide Shipping",
+          primaryCtaText: "Export Inquiry",
+          primaryCtaLink: "export",
+          secondaryCtaText: "Chat on WhatsApp",
+          secondaryCtaLink: "whatsapp",
+          imageUrl: "/assets/reference/export_ship.jpg"
+        }
+      ];
+
+  const handleAddSlide = () => {
+    const newSlide = {
+      id: `slide-${Date.now()}`,
+      eyebrow: "NEW SPECIAL ARRIVAL",
+      title: "Special Karachi Nimco",
+      subtitle: "Fresh Batch Just Prepared",
+      tagline: "Crisp & Savory • Pure Spices • Fast Nationwide Delivery",
+      badge: "🔥 New Arrival",
+      primaryCtaText: "Order Now",
+      primaryCtaLink: "shop",
+      secondaryCtaText: "WhatsApp Us",
+      secondaryCtaLink: "whatsapp",
+      imageUrl: "/assets/reference/hero_food.jpg"
+    };
+    const updated = [...currentHeroSlides, newSlide];
+    handleChange('heroSlides', updated);
+  };
+
+  const handleSlideChange = (index, field, value) => {
+    const updated = [...currentHeroSlides];
+    if (updated[index]) {
+      updated[index] = { ...updated[index], [field]: value };
+      const updates = { heroSlides: updated };
+      if (index === 0) {
+        if (field === 'title') updates.heroTitle = value;
+        if (field === 'eyebrow') updates.heroEyebrow = value;
+        if (field === 'subtitle') updates.heroSubtitle = value;
+        if (field === 'tagline') updates.heroTagline = value;
+        if (field === 'primaryCtaText') updates.heroPrimaryCtaText = value;
+        if (field === 'primaryCtaLink') updates.heroPrimaryCtaLink = value;
+        if (field === 'secondaryCtaText') updates.heroSecondaryCtaText = value;
+        if (field === 'secondaryCtaLink') updates.heroSecondaryCtaLink = value;
+        if (field === 'imageUrl') updates.heroImageUrl = value;
+      }
+      updateSiteConfig(updates);
+      showSavedIndicator();
+    }
+  };
+
+  const handleDeleteSlide = (index) => {
+    if (currentHeroSlides.length <= 1) {
+      alert("Kam az kam 1 slide ka hona zaroori hai.");
+      return;
+    }
+    if (window.confirm(`Slide #${index + 1} ko delete karein?`)) {
+      const updated = currentHeroSlides.filter((_, i) => i !== index);
+      handleChange('heroSlides', updated);
+    }
+  };
+
+  const handleMoveSlide = (index, direction) => {
+    const target = index + direction;
+    if (target < 0 || target >= currentHeroSlides.length) return;
+    const updated = [...currentHeroSlides];
+    const temp = updated[index];
+    updated[index] = updated[target];
+    updated[target] = temp;
+    handleChange('heroSlides', updated);
+  };
+
   const subTabs = [
     { id: 'branding', label: '👑 Brand & Logo', icon: Sparkles },
     { id: 'announcement', label: '📢 Announcement Bar', icon: Megaphone },
-    { id: 'hero', label: '⚡ Hero Section', icon: Layout },
+    { id: 'hero', label: '🎠 Hero Carousel & Slides', icon: Layout },
     { id: 'benefits', label: '✨ Benefits Strip', icon: Layers },
     { id: 'promotions', label: '📦 Promo Banners', icon: Package },
     { id: 'story', label: '🌿 Story & Heritage', icon: Type },
@@ -434,87 +544,295 @@ export const SiteCustomizerTab = () => {
         </div>
       )}
 
-      {/* SUB-TAB 3: ⚡ HERO SECTION */}
+      {/* SUB-TAB 3: 🎠 HERO CAROUSEL & SLIDES */}
       {activeSubTab === 'hero' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-5">
-          <div className="border-b border-slate-800 pb-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Layout className="w-4 h-4 text-amber-400" />
-              <span>Homepage Hero Split Banner</span>
-            </h3>
-            <p className="text-xs text-slate-400">Headlines, value propositions, CTA buttons aur food photography image.</p>
+        <div className="space-y-6">
+          
+          {/* 1. Global Carousel Settings Card */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Layout className="w-4 h-4 text-amber-400" />
+                  <span>Homepage Hero Carousel Settings</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Carousel slider enable karein, autoplay speed set karein, aur slides customize karein.
+                </p>
+              </div>
+
+              {/* Add New Slide Button */}
+              <button
+                type="button"
+                onClick={handleAddSlide}
+                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow transition-all transform hover:scale-[1.02] shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add New Slide</span>
+              </button>
+            </div>
+
+            {/* Quick Carousel Controls */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
+              {/* Carousel Enabled Toggle */}
+              <div className="bg-slate-950 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-white block">Carousel Mode</span>
+                  <span className="text-[10px] text-slate-400">Multiple rotating slides</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleChange('carouselEnabled', siteConfig.carouselEnabled === false ? true : false)}
+                  className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-colors ${
+                    siteConfig.carouselEnabled !== false
+                      ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                      : 'bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  {siteConfig.carouselEnabled !== false ? 'ON (Active)' : 'OFF (Single)'}
+                </button>
+              </div>
+
+              {/* Autoplay Toggle */}
+              <div className="bg-slate-950 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-white block">Autoplay</span>
+                  <span className="text-[10px] text-slate-400">Slides rotate automatically</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleChange('carouselAutoplay', siteConfig.carouselAutoplay === false ? true : false)}
+                  className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-colors ${
+                    siteConfig.carouselAutoplay !== false
+                      ? 'bg-amber-500 text-slate-950 shadow-sm'
+                      : 'bg-slate-800 text-slate-400'
+                  }`}
+                >
+                  {siteConfig.carouselAutoplay !== false ? 'Enabled' : 'Paused'}
+                </button>
+              </div>
+
+              {/* Interval / Speed */}
+              <div className="bg-slate-950 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-white block">Slide Duration</span>
+                  <span className="text-[10px] text-slate-400">Time per slide</span>
+                </div>
+                <select
+                  value={siteConfig.carouselInterval || 5000}
+                  onChange={(e) => handleChange('carouselInterval', Number(e.target.value))}
+                  className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-amber-400"
+                >
+                  <option value={3000}>3 Seconds</option>
+                  <option value={5000}>5 Seconds (Normal)</option>
+                  <option value={7000}>7 Seconds</option>
+                  <option value={10000}>10 Seconds (Slow)</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Eyebrow Badge (Golden Uppercase)</label>
-              <input
-                type="text"
-                value={siteConfig.heroEyebrow || ''}
-                onChange={(e) => handleChange('heroEyebrow', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
+          {/* 2. Slides List Manager */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Active Slides ({currentHeroSlides.length})
+              </h4>
+              <span className="text-[11px] text-slate-500">
+                Arrows se slide order change karein ya photo upload karein
+              </span>
             </div>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Hero Main Title (Large Serif)</label>
-              <input
-                type="text"
-                value={siteConfig.heroTitle || ''}
-                onChange={(e) => handleChange('heroTitle', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
+            {currentHeroSlides.map((slide, index) => (
+              <div
+                key={slide.id || index}
+                className="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 sm:p-5 space-y-4 transition-all shadow-md"
+              >
+                {/* Slide Header Strip */}
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <span className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono font-black text-xs flex items-center justify-center">
+                      #{index + 1}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">
+                        {slide.title || `Slide ${index + 1}`}
+                      </h4>
+                      {slide.badge && (
+                        <span className="bg-amber-400/10 text-amber-400 border border-amber-400/20 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                          {slide.badge}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Hero Subtitle</label>
-              <input
-                type="text"
-                value={siteConfig.heroSubtitle || ''}
-                onChange={(e) => handleChange('heroSubtitle', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
+                  {/* Actions: Move Up, Move Down, Delete */}
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      disabled={index === 0}
+                      onClick={() => handleMoveSlide(index, -1)}
+                      className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-slate-300 rounded-lg transition-colors"
+                      title="Move Up"
+                    >
+                      <ChevronUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      disabled={index === currentHeroSlides.length - 1}
+                      onClick={() => handleMoveSlide(index, 1)}
+                      className="p-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-slate-300 rounded-lg transition-colors"
+                      title="Move Down"
+                    >
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteSlide(index)}
+                      className="p-1.5 bg-rose-950/60 hover:bg-rose-900 text-rose-300 rounded-lg border border-rose-800/60 transition-colors ml-1"
+                      title="Delete Slide"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Value Proposition Line (e.g. Authentic • Fresh)</label>
-              <input
-                type="text"
-                value={siteConfig.heroTagline || ''}
-                onChange={(e) => handleChange('heroTagline', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
+                {/* Slide Details Form */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Slide Badge (e.g. ⭐ Heritage)</label>
+                    <input
+                      type="text"
+                      value={slide.badge || ''}
+                      onChange={(e) => handleSlideChange(index, 'badge', e.target.value)}
+                      placeholder="e.g. ⭐ Burns Road Heritage"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Primary CTA Button Text</label>
-              <input
-                type="text"
-                value={siteConfig.heroPrimaryCtaText || ''}
-                onChange={(e) => handleChange('heroPrimaryCtaText', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Eyebrow Headline (Gold text)</label>
+                    <input
+                      type="text"
+                      value={slide.eyebrow || ''}
+                      onChange={(e) => handleSlideChange(index, 'eyebrow', e.target.value)}
+                      placeholder="e.g. TRADITIONAL PAKISTANI NIMCO"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
 
-            <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">Secondary CTA Button Text</label>
-              <input
-                type="text"
-                value={siteConfig.heroSecondaryCtaText || ''}
-                onChange={(e) => handleChange('heroSecondaryCtaText', e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Main Title Headline *</label>
+                    <input
+                      type="text"
+                      value={slide.title || ''}
+                      onChange={(e) => handleSlideChange(index, 'title', e.target.value)}
+                      placeholder="e.g. Khandani Nimco"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Subtitle (Italic Serif)</label>
+                    <input
+                      type="text"
+                      value={slide.subtitle || ''}
+                      onChange={(e) => handleSlideChange(index, 'subtitle', e.target.value)}
+                      placeholder="e.g. Made for Every Occasion"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="text-slate-400 font-semibold block mb-1">Tagline / Key Features</label>
+                    <input
+                      type="text"
+                      value={slide.tagline || ''}
+                      onChange={(e) => handleSlideChange(index, 'tagline', e.target.value)}
+                      placeholder="e.g. Authentic taste • Premium quality • Freshly prepared"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  {/* Primary CTA */}
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Primary Button Text</label>
+                    <input
+                      type="text"
+                      value={slide.primaryCtaText || ''}
+                      onChange={(e) => handleSlideChange(index, 'primaryCtaText', e.target.value)}
+                      placeholder="Explore Collection"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Primary Button Target</label>
+                    <select
+                      value={slide.primaryCtaLink || 'shop'}
+                      onChange={(e) => handleSlideChange(index, 'primaryCtaLink', e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="shop">Complete Shop Page</option>
+                      <option value="bulk-orders">Bulk / Wholesale Orders</option>
+                      <option value="export">Export Inquiry Page</option>
+                      <option value="about">About Us Page</option>
+                      <option value="contact">Contact Us Page</option>
+                      <option value="whatsapp">Direct WhatsApp Chat</option>
+                    </select>
+                  </div>
+
+                  {/* Secondary CTA */}
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Secondary Button Text</label>
+                    <input
+                      type="text"
+                      value={slide.secondaryCtaText || ''}
+                      onChange={(e) => handleSlideChange(index, 'secondaryCtaText', e.target.value)}
+                      placeholder="WhatsApp Order"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-400 font-semibold block mb-1">Secondary Button Target</label>
+                    <select
+                      value={slide.secondaryCtaLink || 'whatsapp'}
+                      onChange={(e) => handleSlideChange(index, 'secondaryCtaLink', e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="whatsapp">Direct WhatsApp Chat</option>
+                      <option value="tel">Phone Call Helpline</option>
+                      <option value="bulk-orders">Bulk / Wholesale Orders</option>
+                      <option value="shop">Complete Shop Page</option>
+                      <option value="export">Export Inquiry Page</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Direct Image Upload for this Slide */}
+                <div className="pt-2 border-t border-slate-800">
+                  <ImageUploadField
+                    label={`Slide #${index + 1} Photo (Mobile / Laptop se Upload Karein)`}
+                    value={slide.imageUrl || ''}
+                    onChange={(newUrl) => handleSlideChange(index, 'imageUrl', newUrl)}
+                    maxDimension={1200}
+                    placeholder="/assets/reference/hero_food.jpg ya web image link"
+                    helpText="Is slide ke liye apne device se photo select karein. System auto-compress kar ke laga dega."
+                  />
+                </div>
+              </div>
+            ))}
+
+            {/* Bottom Add Slide Button */}
+            <button
+              type="button"
+              onClick={handleAddSlide}
+              className="w-full py-3 border-2 border-dashed border-slate-700 hover:border-amber-400 rounded-2xl text-xs font-bold text-slate-300 hover:text-amber-400 flex items-center justify-center gap-2 transition-colors bg-slate-950"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Another Slide (+ Nayi Slide Banayein)</span>
+            </button>
           </div>
 
-          <ImageUploadField
-            label="Hero Section Photography"
-            value={siteConfig.heroImageUrl || ''}
-            onChange={(newUrl) => handleChange('heroImageUrl', newUrl)}
-            maxDimension={1200}
-            placeholder="/assets/reference/hero_food.jpg ya web image link"
-            helpText="Homepage ke main hero banner ke liye high-resolution photo select karein."
-          />
         </div>
       )}
 
