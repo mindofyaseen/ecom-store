@@ -4,6 +4,7 @@ import { HeroSection } from './HeroSection';
 import { ServiceBenefitsStrip } from './ServiceBenefitsStrip';
 import { ProductCard } from './ProductCard';
 import { PromotionalBanners } from './PromotionalBanners';
+import { CustomerReviewsSection } from './CustomerReviewsSection';
 import { WhyChooseUs } from './WhyChooseUs';
 import { BrandStorySection } from './BrandStorySection';
 import { ArrowRight } from 'lucide-react';
@@ -64,10 +65,13 @@ export const HomePage = () => {
 
       </section>
 
-      {/* 4. Wholesale & Export Promotional Sections */}
+      {/* 4. Customer Reviews & Social Proof Section */}
+      <CustomerReviewsSection />
+
+      {/* 5. Wholesale & Export Promotional Sections */}
       <PromotionalBanners />
 
-      {/* 5. Why Choose Us Section */}
+      {/* 6. Why Choose Us Section */}
       <WhyChooseUs />
 
       {/* 6. Brand Story Section ("A Legacy of Taste") */}

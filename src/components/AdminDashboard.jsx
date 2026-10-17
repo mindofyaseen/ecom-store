@@ -52,7 +52,10 @@ export const AdminDashboard = () => {
     setViewMode,
     setReceiptModalOrder,
     setTrackingModalOrder,
-    generateWhatsAppLink,
+    addCustomerFeedback,
+    updateCustomerFeedback,
+    deleteCustomerFeedback,
+    resetFeedbacksToDefault,
     logoutAdmin,
     changeAdminPassword
   } = useStore();
@@ -65,6 +68,22 @@ export const AdminDashboard = () => {
   const [newPasswordInput, setNewPasswordInput] = useState('');
   const [passChangeMsg, setPassChangeMsg] = useState(null);
   const [productSearch, setProductSearch] = useState('');
+
+  // Customer Reviews & Feedback State
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [editingReview, setEditingReview] = useState(null);
+  const [reviewSearch, setReviewSearch] = useState('');
+  const [reviewFilter, setReviewFilter] = useState('All');
+  const [reviewForm, setReviewForm] = useState({
+    customerName: '',
+    city: 'Karachi, Pakistan',
+    phone: '',
+    rating: 5,
+    product: 'Special Khandani Mix Nimco',
+    category: 'Taste & Heritage',
+    comment: '',
+    verified: true
+  });
   
   // Product Modal State
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -131,6 +150,67 @@ export const AdminDashboard = () => {
     });
     setIsProductModalOpen(true);
   };
+
+  // Reviews handlers
+  const handleOpenAddReview = () => {
+    setEditingReview(null);
+    setReviewForm({
+      customerName: '',
+      city: 'Karachi (Burns Road)',
+      phone: '',
+      rating: 5,
+      product: 'Special Khandani Mix Nimco',
+      category: 'Taste & Heritage',
+      comment: '',
+      verified: true
+    });
+    setIsReviewModalOpen(true);
+  };
+
+  const handleOpenEditReview = (rev) => {
+    setEditingReview(rev);
+    setReviewForm({
+      customerName: rev.customerName || rev.name || '',
+      city: rev.city || 'Pakistan',
+      phone: rev.phone || '',
+      rating: rev.rating || 5,
+      product: rev.product || 'Special Khandani Mix Nimco',
+      category: rev.category || 'Taste & Heritage',
+      comment: rev.comment || '',
+      verified: rev.verified !== false
+    });
+    setIsReviewModalOpen(true);
+  };
+
+  const handleSaveReview = (e) => {
+    e.preventDefault();
+    if (editingReview) {
+      updateCustomerFeedback(editingReview.id, reviewForm);
+    } else {
+      addCustomerFeedback(reviewForm);
+    }
+    setIsReviewModalOpen(false);
+  };
+
+  const handleDeleteReview = (id) => {
+    if (window.confirm('Kya aap waqai is review ko delete karna chahte hain?')) {
+      deleteCustomerFeedback(id);
+    }
+  };
+
+  // Filtered reviews
+  const filteredFeedbacks = (feedbacks || []).filter((fb) => {
+    const nameMatch = (fb.customerName || fb.name || '').toLowerCase().includes(reviewSearch.toLowerCase());
+    const cityMatch = (fb.city || '').toLowerCase().includes(reviewSearch.toLowerCase());
+    const commentMatch = (fb.comment || '').toLowerCase().includes(reviewSearch.toLowerCase());
+    const matchesSearch = reviewSearch === '' || nameMatch || cityMatch || commentMatch;
+
+    if (!matchesSearch) return false;
+    if (reviewFilter === '5 Stars') return (fb.rating || 5) === 5;
+    if (reviewFilter === 'Karachi') return (fb.city || '').toLowerCase().includes('karachi');
+    if (reviewFilter === 'Overseas') return (fb.city || '').toLowerCase().includes('dubai') || (fb.category || '').toLowerCase().includes('export');
+    return true;
+  });
 
   const handleOpenEditProduct = (prod) => {
     setEditingProduct(prod);
@@ -305,7 +385,7 @@ export const AdminDashboard = () => {
             }`}
           >
             <MessageSquarePlus className="w-4 h-4" />
-            <span>Customer Feedbacks ({feedbacks?.length || 0})</span>
+            <span>⭐ Reviews & Feedback ({feedbacks?.length || 0})</span>
           </button>
 
           <button
@@ -761,57 +841,161 @@ export const AdminDashboard = () => {
           </div>
         )}
 
-        {/* TAB 5: CUSTOMER FEEDBACKS & REVIEWS */}
+        {/* TAB 5: CUSTOMER REVIEWS & TESTIMONIALS MANAGER */}
         {activeTab === 'feedbacks' && (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            
+            {/* Header with Title and Actions */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-5">
               <div>
                 <h3 className="text-base font-black text-white font-serif flex items-center gap-2">
-                  Customer Feedbacks & Suggestions
+                  <span>Customer Reviews & Social Proof</span>
                   <span className="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full font-bold">
                     {feedbacks?.length || 0} Reviews
                   </span>
                 </h3>
-                <p className="text-xs text-slate-400">Feedback submitted directly by verified customers across Pakistan</p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Yahan se homepage aur product pages par show hone wale customer reviews add, edit ya delete karein. Ye website par live update hote hain.
+                </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl text-amber-400 font-bold">
-                <span>★ 4.9 Rating Overall</span>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  onClick={resetFeedbacksToDefault}
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl text-xs font-semibold transition-colors"
+                  title="Reset to 8 authentic Pakistani default reviews"
+                >
+                  ↺ Reset Defaults
+                </button>
+
+                <button
+                  onClick={handleOpenAddReview}
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-md transition-all hover:scale-105 active:scale-95"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add New Review</span>
+                </button>
               </div>
             </div>
 
+            {/* Filter and Search Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-950 p-3 rounded-2xl border border-slate-800">
+              <div className="relative w-full sm:w-72">
+                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  placeholder="Search by name, city, comment..."
+                  value={reviewSearch}
+                  onChange={(e) => setReviewSearch(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto text-xs">
+                <span className="text-slate-400 text-[11px] font-medium hidden sm:inline">Filter:</span>
+                {['All', '5 Stars', 'Karachi', 'Overseas'].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setReviewFilter(filter)}
+                    className={`px-3 py-1 rounded-lg font-bold text-[11px] transition-colors ${
+                      reviewFilter === filter
+                        ? 'bg-amber-500 text-slate-950'
+                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Reviews Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {feedbacks && feedbacks.map((fb) => (
-                <div key={fb.id} className="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-3 flex flex-col justify-between shadow-sm hover:border-slate-700 transition-colors">
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="text-sm font-bold text-white">{fb.name}</h4>
-                        <span className="text-[11px] text-slate-400 font-mono">{fb.phone || 'N/A'}</span>
-                      </div>
-                      <div className="flex items-center gap-0.5 text-amber-400">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-sm ${i < fb.rating ? 'text-amber-400' : 'text-slate-700'}`}>
-                            ★
+              {filteredFeedbacks && filteredFeedbacks.length > 0 ? (
+                filteredFeedbacks.map((fb) => (
+                  <div
+                    key={fb.id}
+                    className="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-3 flex flex-col justify-between shadow-sm hover:border-slate-700 transition-colors relative group"
+                  >
+                    <div className="space-y-2.5">
+                      
+                      {/* Name, City & Action Buttons */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-bold text-white">
+                              {fb.customerName || fb.name}
+                            </h4>
+                            {fb.verified !== false && (
+                              <span className="text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1.5 py-0.2 rounded font-bold">
+                                ✓ Verified
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
+                            📍 {fb.city || 'Pakistan'} {fb.phone ? `• ${fb.phone}` : ''}
                           </span>
-                        ))}
+                        </div>
+
+                        {/* Edit & Delete Buttons */}
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleOpenEditReview(fb)}
+                            className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded-lg transition-colors"
+                            title="Edit Review"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteReview(fb.id)}
+                            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
+                            title="Delete Review"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
+
+                      {/* Stars & Product Tag */}
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-0.5 text-amber-400">
+                          {[...Array(5)].map((_, i) => (
+                            <span key={i} className={`text-xs ${i < (fb.rating || 5) ? 'text-amber-400' : 'text-slate-700'}`}>
+                              ★
+                            </span>
+                          ))}
+                        </div>
+
+                        {fb.product && (
+                          <span className="text-[10px] text-amber-300/80 bg-amber-950/40 border border-amber-800/50 px-2 py-0.5 rounded truncate max-w-[150px]">
+                            📦 {fb.product}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Comment text */}
+                      <p className="text-xs text-slate-300 leading-relaxed italic">
+                        "{fb.comment}"
+                      </p>
                     </div>
 
-                    <p className="text-xs text-slate-300 leading-relaxed italic">
-                      "{fb.comment}"
-                    </p>
-                  </div>
+                    {/* Bottom Metadata */}
+                    <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                      <span className="bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-2 py-0.5 rounded-md font-medium text-[10px]">
+                        {fb.category || 'General'}
+                      </span>
+                      <span className="text-slate-500 text-[10px]">{fb.date || 'Recent'}</span>
+                    </div>
 
-                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
-                    <span className="bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-2 py-0.5 rounded-md font-medium text-[10px]">
-                      {fb.category}
-                    </span>
-                    <span className="text-slate-500">{fb.date}</span>
                   </div>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center text-slate-500 text-xs">
+                  Koi review nahi mila. Naya review add karne ke liyay "+ Add New Review" par click karein.
                 </div>
-              ))}
+              )}
             </div>
+
           </div>
         )}
 
@@ -1136,6 +1320,149 @@ export const AdminDashboard = () => {
                   className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow"
                 >
                   Save Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: ADD / EDIT CUSTOMER REVIEW */}
+      {isReviewModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+          <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 my-6">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-base font-black text-white font-serif flex items-center gap-2">
+                <span>{editingReview ? 'Edit Customer Review' : 'Add New Customer Review'}</span>
+              </h3>
+              <button
+                onClick={() => setIsReviewModalOpen(false)}
+                className="p-1 text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveReview} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Customer Name *</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. Haji Muhammad Usman"
+                    value={reviewForm.customerName}
+                    onChange={(e) => setReviewForm({ ...reviewForm, customerName: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">City / Location *</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. Karachi (Burns Road) or Lahore"
+                    value={reviewForm.city}
+                    onChange={(e) => setReviewForm({ ...reviewForm, city: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Star Rating (1-5) *</label>
+                  <select
+                    value={reviewForm.rating}
+                    onChange={(e) => setReviewForm({ ...reviewForm, rating: Number(e.target.value) })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  >
+                    <option value={5}>⭐⭐⭐⭐⭐ (5 Stars - Excellent)</option>
+                    <option value={4}>⭐⭐⭐⭐ (4 Stars - Good)</option>
+                    <option value={3}>⭐⭐⭐ (3 Stars - Average)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Product Purchased</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Special Khandani Mix Nimco"
+                    value={reviewForm.product}
+                    onChange={(e) => setReviewForm({ ...reviewForm, product: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Category / Tag</label>
+                  <select
+                    value={reviewForm.category}
+                    onChange={(e) => setReviewForm({ ...reviewForm, category: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  >
+                    <option value="Taste & Heritage">Taste & Heritage</option>
+                    <option value="Packaging & Delivery">Packaging & Delivery</option>
+                    <option value="Family & Tea-Time">Family & Tea-Time</option>
+                    <option value="Events & Bulk Orders">Events & Bulk Orders</option>
+                    <option value="Export Quality">Export Quality</option>
+                    <option value="Luxury Gifting">Luxury Gifting</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Phone / WhatsApp (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="0300-XXXXXXX"
+                    value={reviewForm.phone}
+                    onChange={(e) => setReviewForm({ ...reviewForm, phone: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-slate-400 font-bold block mb-1">Customer Review Comment *</label>
+                <textarea
+                  required
+                  rows={3}
+                  placeholder="Review comments in Urdu or English..."
+                  value={reviewForm.comment}
+                  onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-400 resize-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 pt-1">
+                <input
+                  type="checkbox"
+                  id="verifiedReview"
+                  checked={reviewForm.verified}
+                  onChange={(e) => setReviewForm({ ...reviewForm, verified: e.target.checked })}
+                  className="rounded border-slate-700 bg-slate-950 text-amber-500 focus:ring-0 w-4 h-4"
+                />
+                <label htmlFor="verifiedReview" className="text-slate-300 font-medium cursor-pointer">
+                  Mark as Verified Buyer (Shows green ✓ badge on website)
+                </label>
+              </div>
+
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsReviewModalOpen(false)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow transition-transform active:scale-95"
+                >
+                  {editingReview ? 'Save Changes' : 'Add Review'}
                 </button>
               </div>
             </form>

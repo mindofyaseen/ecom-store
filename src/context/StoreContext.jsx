@@ -36,10 +36,20 @@ export const StoreProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : INITIAL_COUPONS;
   });
 
-  // Feedbacks state
+  // Feedbacks / Reviews state
   const [feedbacks, setFeedbacks] = useState(() => {
-    const saved = localStorage.getItem('khandani_nimco_feedbacks');
-    return saved ? JSON.parse(saved) : INITIAL_FEEDBACKS;
+    const saved = localStorage.getItem('khandani_nimco_feedbacks_v2') || localStorage.getItem('khandani_nimco_feedbacks');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 4) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error('Failed to parse saved feedbacks', e);
+      }
+    }
+    return INITIAL_FEEDBACKS;
   });
 
   // Wishlist state
@@ -179,6 +189,7 @@ export const StoreProvider = ({ children }) => {
   }, [coupons]);
 
   useEffect(() => {
+    localStorage.setItem('khandani_nimco_feedbacks_v2', JSON.stringify(feedbacks));
     localStorage.setItem('khandani_nimco_feedbacks', JSON.stringify(feedbacks));
   }, [feedbacks]);
 
@@ -513,19 +524,50 @@ export const StoreProvider = ({ children }) => {
     setCouponError('');
   };
 
-  // Customer Feedback submission
+  // Customer Feedback / Review submission
   const addCustomerFeedback = (feedbackData) => {
     const newFeedback = {
       id: `fb-${Date.now()}`,
-      customerName: feedbackData.customerName || currentUser?.name || 'Valued Customer',
+      customerName: feedbackData.customerName || feedbackData.name || currentUser?.name || 'Valued Customer',
+      name: feedbackData.customerName || feedbackData.name || currentUser?.name || 'Valued Customer',
+      city: feedbackData.city || 'Karachi, Pakistan',
       phone: feedbackData.phone || currentUser?.phone || 'N/A',
       rating: Number(feedbackData.rating) || 5,
-      category: feedbackData.category || 'General',
+      product: feedbackData.product || 'Khandani Special Mix',
+      category: feedbackData.category || 'Taste & Crunch',
       comment: feedbackData.comment,
-      date: new Date().toISOString().split('T')[0]
+      verified: feedbackData.verified !== undefined ? feedbackData.verified : true,
+      date: feedbackData.date || 'Just now'
     };
     setFeedbacks(prev => [newFeedback, ...prev]);
     return true;
+  };
+
+  const updateCustomerFeedback = (id, updatedFields) => {
+    setFeedbacks(prev => prev.map(item => {
+      if (item.id === id) {
+        const nameVal = updatedFields.customerName || updatedFields.name || item.customerName || item.name;
+        return {
+          ...item,
+          ...updatedFields,
+          name: nameVal,
+          customerName: nameVal
+        };
+      }
+      return item;
+    }));
+    return true;
+  };
+
+  const deleteCustomerFeedback = (id) => {
+    setFeedbacks(prev => prev.filter(item => item.id !== id));
+    return true;
+  };
+
+  const resetFeedbacksToDefault = () => {
+    setFeedbacks(INITIAL_FEEDBACKS);
+    localStorage.setItem('khandani_nimco_feedbacks_v2', JSON.stringify(INITIAL_FEEDBACKS));
+    localStorage.setItem('khandani_nimco_feedbacks', JSON.stringify(INITIAL_FEEDBACKS));
   };
 
   // Product Review submission
@@ -733,6 +775,9 @@ export const StoreProvider = ({ children }) => {
         formatPrice,
         generateWhatsAppLink,
         addCustomerFeedback,
+        updateCustomerFeedback,
+        deleteCustomerFeedback,
+        resetFeedbacksToDefault,
         addProductReview,
         placeOrder,
         getOrderById,

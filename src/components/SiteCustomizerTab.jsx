@@ -35,7 +35,7 @@ import {
 import { ImageUploadField } from './ImageUploadField';
 
 export const SiteCustomizerTab = () => {
-  const { siteConfig, updateSiteConfig, resetSiteConfig, setViewMode, products, coupons, importStoreBackup } = useStore();
+  const { siteConfig, updateSiteConfig, resetSiteConfig, setViewMode, products, coupons, importStoreBackup, feedbacks } = useStore();
   const [activeSubTab, setActiveSubTab] = useState('branding');
   const [saveToast, setSaveToast] = useState(false);
   const backupFileInputRef = React.useRef(null);
@@ -238,6 +238,8 @@ export const SiteCustomizerTab = () => {
     { id: 'branding', label: '👑 Brand & Logo', icon: Sparkles },
     { id: 'announcement', label: '📢 Announcement Bar', icon: Megaphone },
     { id: 'hero', label: '🎠 Hero Carousel & Slides', icon: Layout },
+    { id: 'whatsapp', label: '💬 WhatsApp Chat Widget', icon: Phone },
+    { id: 'reviews', label: '⭐ Customer Reviews (Homepage)', icon: Sparkles },
     { id: 'benefits', label: '✨ Benefits Strip', icon: Layers },
     { id: 'promotions', label: '📦 Promo Banners', icon: Package },
     { id: 'story', label: '🌿 Story & Heritage', icon: Type },
@@ -831,6 +833,263 @@ export const SiteCustomizerTab = () => {
               <Plus className="w-4 h-4" />
               <span>Add Another Slide (+ Nayi Slide Banayein)</span>
             </button>
+          </div>
+
+        </div>
+      )}
+
+      {/* SUB-TAB: 💬 WHATSAPP CHAT WIDGET */}
+      {activeSubTab === 'whatsapp' && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-6">
+          <div className="border-b border-slate-800 pb-4">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Phone className="w-4 h-4 text-emerald-400" />
+              <span>WhatsApp Floating Chat Widget (Live Settings)</span>
+            </h3>
+            <p className="text-xs text-slate-400">
+              Website ke bottom-right corner par aane walay floating WhatsApp popup card aur texts ko yahan se customize karein.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            
+            {/* Form Controls */}
+            <div className="space-y-4">
+              
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Helpline WhatsApp Number (Bina '+' ya spaces ke)
+                </label>
+                <input
+                  type="text"
+                  value={siteConfig.whatsappNumber || '923242478108'}
+                  onChange={(e) => handleChange('whatsappNumber', e.target.value.replace(/[^0-9]/g, ''))}
+                  placeholder="923242478108"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
+                />
+                <span className="text-[10px] text-slate-500 mt-1 block">Active Number: +{siteConfig.whatsappNumber || '923242478108'}</span>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Support Representative / Agent Title
+                </label>
+                <input
+                  type="text"
+                  value={siteConfig.whatsappAgentName || 'KKM Support'}
+                  onChange={(e) => handleChange('whatsappAgentName', e.target.value)}
+                  placeholder="e.g. KKM Support or Khandani Support"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Widget Top Title
+                </label>
+                <input
+                  type="text"
+                  value={siteConfig.whatsappWidgetHeader || 'Start a Conversation'}
+                  onChange={(e) => handleChange('whatsappWidgetHeader', e.target.value)}
+                  placeholder="Start a Conversation"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Greeting Subtext (In Green Banner)
+                </label>
+                <input
+                  type="text"
+                  value={siteConfig.whatsappWidgetSubtext || `Hi! Click ${siteConfig.whatsappAgentName || 'KKM Support'} below to chat on WhatsApp`}
+                  onChange={(e) => handleChange('whatsappWidgetSubtext', e.target.value)}
+                  placeholder="Hi! Click KKM Support below to chat on WhatsApp"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Reply-Time Notice
+                </label>
+                <input
+                  type="text"
+                  value={siteConfig.whatsappReplyNotice || `${siteConfig.whatsappAgentName || 'KKM Support'} typically replies in a few minutes.`}
+                  onChange={(e) => handleChange('whatsappReplyNotice', e.target.value)}
+                  placeholder="KKM support typically replies in a few minutes."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Default Pre-filled Message (When chat opens)
+                </label>
+                <textarea
+                  rows={2}
+                  value={siteConfig.whatsappDefaultMsg || 'Assalam-o-Alaikum! I want to inquire about Khandani Nimco products.'}
+                  onChange={(e) => handleChange('whatsappDefaultMsg', e.target.value)}
+                  placeholder="Assalam-o-Alaikum! I have an inquiry..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-400 resize-none"
+                />
+              </div>
+
+            </div>
+
+            {/* Live Visual Widget Preview matching reference */}
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+              <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">
+                🔴 Live Preview (Exactly as seen on store)
+              </span>
+
+              <div className="max-w-[320px] mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 text-slate-800">
+                {/* Green Header */}
+                <div className="bg-[#20B038] p-4 text-white flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white leading-tight">
+                      {siteConfig.whatsappWidgetHeader || 'Start a Conversation'}
+                    </h4>
+                    <p className="text-[11px] text-white/90 mt-0.5 leading-snug">
+                      {siteConfig.whatsappWidgetSubtext || `Hi! Click ${siteConfig.whatsappAgentName || 'KKM Support'} below to chat on WhatsApp`}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div className="p-4 space-y-3 bg-white">
+                  <p className="text-[11px] text-slate-500 font-medium">
+                    {siteConfig.whatsappReplyNotice || `${siteConfig.whatsappAgentName || 'KKM Support'} typically replies in a few minutes.`}
+                  </p>
+
+                  <div 
+                    className="bg-white border border-slate-200 rounded-xl p-3 shadow-xs flex items-center justify-between"
+                    style={{ borderLeft: '4px solid #20B038' }}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-[#20B038] text-white flex items-center justify-center ring-2 ring-[#20B038]/20">
+                        <Phone className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h5 className="text-xs font-bold text-slate-900">
+                          {siteConfig.whatsappAgentName || 'KKM Support'}
+                        </h5>
+                        <span className="text-[9px] text-emerald-600 font-medium">Online</span>
+                      </div>
+                    </div>
+                    <div className="text-[#20B038]">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center pt-2">
+                <span className="text-[11px] text-slate-500">
+                  Floating button par click karne se ye popup khulta hai aur white 'X' button show hota hai.
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* SUB-TAB: ⭐ CUSTOMER REVIEWS (HOMEPAGE) */}
+      {activeSubTab === 'reviews' && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-6">
+          <div className="border-b border-slate-800 pb-4">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>Customer Reviews & Testimonials Showcase (Homepage)</span>
+            </h3>
+            <p className="text-xs text-slate-400">
+              Homepage par popular products ke foran baad aane walay Customer Reviews section ke titles aur settings customize karein.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                Reviews Section Main Heading
+              </label>
+              <input
+                type="text"
+                value={siteConfig.reviewsSectionTitle || 'Loved by Customers Across Pakistan'}
+                onChange={(e) => handleChange('reviewsSectionTitle', e.target.value)}
+                placeholder="Loved by Customers Across Pakistan"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                Top Rating Pill / Trust Badge Text
+              </label>
+              <input
+                type="text"
+                value={siteConfig.reviewsSectionBadge || '⭐ 4.9 / 5.0 (500+ Verified Orders)'}
+                onChange={(e) => handleChange('reviewsSectionBadge', e.target.value)}
+                placeholder="⭐ 4.9 / 5.0 (500+ Verified Orders)"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="text-xs font-bold text-slate-300 block mb-1">
+                Section Subtitle / Description
+              </label>
+              <textarea
+                rows={2}
+                value={siteConfig.reviewsSectionSubtitle || 'Authentic crunch, unmatched freshness & traditional taste praised by thousands of happy families'}
+                onChange={(e) => handleChange('reviewsSectionSubtitle', e.target.value)}
+                placeholder="Authentic crunch, unmatched freshness & traditional taste..."
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400 resize-none"
+              />
+            </div>
+          </div>
+
+          {/* Review List Preview & Direct Access */}
+          <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                  <span>Currently Active Reviews ({feedbacks?.length || 0})</span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">
+                    Live on Storefront
+                  </span>
+                </h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  Ye reviews website ke homepage par show ho rahe hain. Inhe add, edit ya delete karne ke liyay Reviews Tab use karein.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setViewMode('store')}
+                className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>View on Store</span>
+              </button>
+            </div>
+
+            {/* Quick Preview Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 pt-2">
+              {(feedbacks || []).slice(0, 4).map((fb, idx) => (
+                <div key={fb.id || idx} className="bg-slate-900 border border-slate-800 p-2.5 rounded-lg text-xs space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white truncate text-[11px]">{fb.customerName || fb.name}</span>
+                    <span className="text-amber-400 text-[10px]">★ {fb.rating || 5}</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 block truncate">📍 {fb.city}</span>
+                  <p className="text-[10px] text-slate-300 italic line-clamp-2">"{fb.comment}"</p>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>

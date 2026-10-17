@@ -577,20 +577,106 @@ export const INITIAL_ORDERS = [
 export const INITIAL_FEEDBACKS = [
   {
     id: "fb-1",
-    customerName: "Kamran Akram",
+    customerName: "Haji Muhammad Usman",
+    name: "Haji Muhammad Usman",
+    city: "Karachi (Burns Road)",
     phone: "0300-8877665",
     rating: 5,
-    category: "Taste & Crunch",
-    comment: "Khandani Mix Nimco aur Mota Gathiya ka crunch lajawab hai! Karachi se Lahore mangwaya tha, nitrogen packing ki wajah se bilkul taaza nikla.",
-    date: "2026-10-06"
+    product: "Special Khandani Mix Nimco",
+    category: "Taste & Heritage",
+    comment: "Bachpan se Burns Road ki nimco khate arahe hain, lekin Khandani Nimco ka masala aur daal moth ka maza bilkul alag hai. Crunch aisa ke kholne ke baad bhi hafte tak taaza rehta hai!",
+    date: "Yesterday",
+    verified: true
   },
   {
     id: "fb-2",
+    customerName: "Dr. Ayesha Malik",
+    name: "Dr. Ayesha Malik",
+    city: "Islamabad (F-7)",
+    phone: "0333-5544332",
+    rating: 5,
+    product: "Meethi Nimco & Kaju Badam Mix",
+    category: "Family & Tea-Time",
+    comment: "Shaam ki chai ke saath Khandani Meethi Nimco hamare ghar me lazmi hoti hai. Packaging bohot zabardast thi, nitrogen sealed pouch me koi crunch kharab nahi hua. Highly recommended!",
+    date: "3 days ago",
+    verified: true
+  },
+  {
+    id: "fb-3",
+    customerName: "Taimur Tariq",
+    name: "Taimur Tariq",
+    city: "Lahore (Gulberg)",
+    phone: "0321-9988771",
+    rating: 5,
+    product: "Mota Gathiya & Spicy Sev",
+    category: "Events & Bulk Orders",
+    comment: "Sister ki wedding ke giveaway hampers ke liyay 20kg bulk order kiya tha. Sab guests ne pucha ke nimco kahan se mangwayi hai. Timing aur quality dono lajawab!",
+    date: "5 days ago",
+    verified: true
+  },
+  {
+    id: "fb-4",
+    customerName: "Bilal Siddiqui",
+    name: "Bilal Siddiqui",
+    city: "Dubai, UAE (Overseas)",
+    phone: "+971-50-1234567",
+    rating: 5,
+    product: "Export Assorted Pack (5kg)",
+    category: "Export Quality",
+    comment: "Dubai me desi nimco ka asoolan wo authentic taste nahi milta tha. Khandani Nimco ka parcel cargo ke zariye 4 din me pohancha, vacuum sealing perfect thi! Ghar ki yaad taaza hogyi.",
+    date: "1 week ago",
+    verified: true
+  },
+  {
+    id: "fb-5",
     customerName: "Farzana Begum",
+    name: "Farzana Begum",
+    city: "Rawalpindi (Saddar)",
     phone: "0322-1122334",
     rating: 5,
+    product: "Khatta Meetha Mix & Papri",
     category: "Packaging & Delivery",
-    comment: "JazzCash se payment ki thi aur 24 ghante me rider ne Karachi me parcel deliver kardiya. 100% authentic Burns Road taste!",
-    date: "2026-10-05"
+    comment: "JazzCash se payment ki thi aur 48 ghante me Rawalpindi parcel deliver hogya. Oil bilkul fresh hai, koi purani tail ki smell nahi thi jo aam tor par bazaar se aati hai. 100% authentic!",
+    date: "1 week ago",
+    verified: true
+  },
+  {
+    id: "fb-6",
+    customerName: "Zubair Ahmed",
+    name: "Zubair Ahmed",
+    city: "Faisalabad (Peoples Colony)",
+    phone: "0345-6677889",
+    rating: 5,
+    product: "Special Daal Moth & Peanut Crisp",
+    category: "Taste & Crunch",
+    comment: "Daal Moth ka namak aur kaali mirch ka balance kamal hai. Pori family ko pasand aya, ab to har mahine ka regular snack order set hogya hai.",
+    date: "2 weeks ago",
+    verified: true
+  },
+  {
+    id: "fb-7",
+    customerName: "Syeda Rabia Kazmi",
+    name: "Syeda Rabia Kazmi",
+    city: "Karachi (DHA Phase 6)",
+    phone: "0302-3344556",
+    rating: 5,
+    product: "Royal Khandani Gift Box",
+    category: "Luxury Gifting",
+    comment: "Family gatherings par relatives ko dene ke liyay gift boxes mangwaye thay. Gold foil packaging aur customized note bohot elegant tha. Sab ne khoob tareef ki!",
+    date: "2 weeks ago",
+    verified: true
+  },
+  {
+    id: "fb-8",
+    customerName: "Malik Shahzad",
+    name: "Malik Shahzad",
+    city: "Peshawar (University Town)",
+    phone: "0313-7788990",
+    rating: 5,
+    product: "Spicy Papri Chaat & Chevda",
+    category: "Spices & Flavor",
+    comment: "Peshawar me aisi karari aur teekhi nimco nahi milti. Delivery speed bhi behtareen thi aur payment Cash on Delivery se aasani se hogayi. Maza agaya!",
+    date: "3 weeks ago",
+    verified: true
   }
 ];

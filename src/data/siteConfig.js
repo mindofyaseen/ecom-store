@@ -10,6 +10,18 @@ export const DEFAULT_SITE_CONFIG = {
   supportEmail: "info@khandanimco.pk",
   storeAddress: "Burns Road / Saddar, Karachi, Pakistan",
   
+  // WhatsApp Floating Chat Widget (Matching user's reference)
+  whatsappAgentName: "KKM Support",
+  whatsappWidgetHeader: "Start a Conversation",
+  whatsappWidgetSubtext: "Hi! Click KKM Support below to chat on WhatsApp",
+  whatsappReplyNotice: "KKM support typically replies in a few minutes.",
+  whatsappDefaultMsg: "Assalam-o-Alaikum! I have an inquiry about ordering Khandani Nimco.",
+
+  // Customer Reviews Showcase (Homepage)
+  reviewsSectionTitle: "Loved by Customers Across Pakistan",
+  reviewsSectionSubtitle: "Authentic crunch, unmatched freshness & traditional taste praised by thousands of happy families",
+  reviewsSectionBadge: "⭐ 4.9 / 5.0 (500+ Verified Orders)",
+
   // Announcement Bar
   announcementLocation: "Karachi, Pakistan",
   announcementText: "Nationwide Delivery | Bulk Orders | Export Orders",
